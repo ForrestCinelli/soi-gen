@@ -43,7 +43,7 @@ showStar star = case star of
     BlueGiant -> "Blue Giant"
 
 --RockyPlanet (List (Maybe OrbitalFeature)) | GasGiant (List (Maybe PlanetaryFeature)) | AsteroidBelt | AsteroidCluster
-type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster
+type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster | DustCloud | GravityRiptide | RadiationBurst | SolarFlare | DerelictStation | StarshipGraveyard
 type TerrestrialPlanet = TerrestrialPlanet PlanetBody PlanetGravity Atmosphere Temperature (List OrbitalFeature)
 type GiantPlanet = GiantPlanet GasBody GasGravity (List OrbitalFeature)
 
@@ -67,6 +67,12 @@ showPlanet p = case p of
     GasGiant -> "Gas Giant"
     AsteroidBelt -> "Asteroid Belt"
     AsteroidCluster -> "Asteroid Cluster"
+    DustCloud -> "Dust Cloud"
+    GravityRiptide -> "Gravity Riptide"
+    RadiationBurst -> "Radiation Burst"
+    SolarFlare -> "Solar Flare"
+    DerelictStation -> "Derelict Station"
+    StarshipGraveyard -> "Starship Graveyard"
 
 type OrbitalFeature = Moon
 
@@ -98,14 +104,39 @@ planetsForStar star = Random.map3 (\i -> \h -> \o -> Model star i h o)
 
 
 randomInner: Random.Generator PlanetaryFeature
-randomInner = Random.uniform RockyPlanet [ GasGiant, AsteroidBelt, AsteroidCluster ]
+randomInner = (Random.int 21 100) |> Random.andThen (\roll -> 
+        if roll <= 29      then Random.constant AsteroidCluster
+        else if roll <= 41 then Random.constant DustCloud
+        else if roll <= 45 then Random.constant GasGiant
+        else if roll <= 56 then Random.constant GravityRiptide
+        else if roll <= 76 then Random.constant RockyPlanet
+        else if roll <= 89 then Random.constant RadiationBurst
+        else                    Random.constant SolarFlare
+    )
 
 --in habitable zone, not necessarily habitable
 randomHabitable: Random.Generator PlanetaryFeature
-randomHabitable = Random.uniform RockyPlanet [ GasGiant, AsteroidBelt, AsteroidCluster ]
+randomHabitable = (Random.int 21 100) |> Random.andThen (\roll ->
+        if roll <= 30      then Random.constant AsteroidBelt
+        else if roll <= 41 then Random.constant AsteroidCluster
+        else if roll <= 47 then Random.constant DerelictStation
+        else if roll <= 58 then Random.constant DustCloud
+        else if roll <= 64 then Random.constant GravityRiptide
+        else if roll <= 93 then Random.constant RockyPlanet
+        else                    Random.constant StarshipGraveyard
+    )
 
 randomOuter: Random.Generator PlanetaryFeature
-randomOuter = Random.uniform RockyPlanet [ GasGiant, AsteroidBelt, AsteroidCluster ]
+randomOuter =  (Random.int 21 100) |> Random.andThen (\roll ->
+        if roll <= 29 then      Random.constant AsteroidBelt
+        else if roll <= 40 then Random.constant AsteroidCluster
+        else if roll <= 46 then Random.constant DerelictStation
+        else if roll <= 55 then Random.constant DustCloud
+        else if roll <= 73 then Random.constant GasGiant
+        else if roll <= 80 then Random.constant GravityRiptide
+        else if roll <= 93 then Random.constant RockyPlanet
+        else                    Random.constant StarshipGraveyard
+    )
 
 --randomRocky: Random.Generator TerrestrialPlanet
 --randomRocky = undefined
