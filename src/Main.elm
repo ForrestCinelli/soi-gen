@@ -27,22 +27,22 @@ type alias Model = { star: Star, innerZone: List PlanetaryFeature, habitableZone
 
 ----
 
-type Star = M | G | F | A
-stars = [M, G, F, A]
+type Star = M | G | F | B
+stars = [M, G, F, B]
 
 regionSizes: Star -> { inner: Int, habitable: Int, outer: Int }
 regionSizes star = case star of 
     M -> { inner = 3, habitable = 3, outer = 5 } -- red.
     G -> { inner = 1, habitable = 5, outer = 3 } -- yellow. the Sun
     F -> { inner = 3, habitable = 3, outer = 3 } -- white.
-    A -> { inner = 5, habitable = 1, outer = 3 } -- blue.
+    B -> { inner = 5, habitable = 1, outer = 3 } -- blue.
 
 showStar: Star -> String
 showStar star = case star of 
     M -> "Red Dwarf"
     G -> "Yellow Dwarf"
     F -> "Yellow-White Star"
-    A -> "Blue Giant"
+    B -> "Blue Giant"
 
 --RockyPlanet (List (Maybe OrbitalFeature)) | GasGiant (List (Maybe PlanetaryFeature)) | AsteroidBelt | AsteroidCluster
 type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster | DustCloud | GravityRiptide | RadiationBurst | SolarFlare | DerelictStation | StarshipGraveyard
@@ -98,7 +98,7 @@ randomModel: Random.Generator Model
 randomModel = randomStar |> Random.andThen planetsForStar
 
 randomStar: Random.Generator Star
-randomStar = Random.uniform M [ G, A ]
+randomStar = Random.uniform M [ G, F, B ]
 
 planetsForStar star = Random.map3 (\i -> \h -> \o -> Model star i h o)
                                   (Random.list (regionSizes star).inner randomInner)
