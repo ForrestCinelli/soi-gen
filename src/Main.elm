@@ -1,3 +1,16 @@
+--todo:
+    --star photos
+    --planet characteristics
+        --generator
+        --view
+    --use probability distributions to handle the 01-20 case where a feature is "None"
+    --orbital features
+        --type 
+        --generator
+        --view
+    --names
+    --make planets and features match book rprecisely
+
 module Main exposing (..)
 
 import Browser
@@ -31,6 +44,22 @@ showStar star = case star of
 
 --RockyPlanet (List (Maybe OrbitalFeature)) | GasGiant (List (Maybe PlanetaryFeature)) | AsteroidBelt | AsteroidCluster
 type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster
+type TerrestrialPlanet = TerrestrialPlanet PlanetBody PlanetGravity Atmosphere Temperature (List OrbitalFeature)
+type GiantPlanet = GiantPlanet GasBody GasGravity (List OrbitalFeature)
+
+type GasBody = Dwarf | Giant | Massive -- massive > giant
+type GasGravity = Weak | String | Powerful | Titanic
+
+type PlanetBody = LowMass | Small | SmallDense | Large | LargeDense | Vast
+type PlanetGravity = Low | Normal | High
+
+type Temperature = Burning | Hot | Temperate | Cold | Ice
+
+type Atmosphere = None | Thin AtmosphereComposition | Moderate AtmosphereComposition | Heavy AtmosphereComposition
+type AtmosphereComposition = Deadly | Corrosive | Toxic | Tainted | Pure
+
+tmpPlanet = TerrestrialPlanet LowMass Low None Burning []
+tmpGiant = GiantPlanet Dwarf Weak []
 
 showPlanet: PlanetaryFeature -> String
 showPlanet p = case p of
@@ -44,7 +73,7 @@ type OrbitalFeature = Moon
 init: () -> (Model, Cmd Msg)
 init _ = ({ star = RedDwarf, innerZone = [], habitableZone = [], outerZone = [] }, Random.generate NewSystem randomModel)
 
---
+----
 
 type Msg = Generate | NewSystem Model
 
@@ -63,16 +92,29 @@ randomStar: Random.Generator Star
 randomStar = Random.uniform RedDwarf [ YellowDwarf, BlueGiant ]
 
 planetsForStar star = Random.map3 (\i -> \h -> \o -> Model star i h o)
-                                  (Random.list (regionSizes star).inner randomPlanet)
-                                  (Random.list (regionSizes star).habitable randomPlanet)
-                                  (Random.list (regionSizes star).outer randomPlanet)
+                                  (Random.list (regionSizes star).inner randomInner)
+                                  (Random.list (regionSizes star).habitable randomHabitable)
+                                  (Random.list (regionSizes star).outer randomOuter)
 
 
-randomPlanet: Random.Generator PlanetaryFeature
-randomPlanet = Random.uniform RockyPlanet [ GasGiant, AsteroidBelt, AsteroidCluster ]
+randomInner: Random.Generator PlanetaryFeature
+randomInner = Random.uniform RockyPlanet [ GasGiant, AsteroidBelt, AsteroidCluster ]
+
+--in habitable zone, not necessarily habitable
+randomHabitable: Random.Generator PlanetaryFeature
+randomHabitable = Random.uniform RockyPlanet [ GasGiant, AsteroidBelt, AsteroidCluster ]
+
+randomOuter: Random.Generator PlanetaryFeature
+randomOuter = Random.uniform RockyPlanet [ GasGiant, AsteroidBelt, AsteroidCluster ]
+
+--randomRocky: Random.Generator TerrestrialPlanet
+--randomRocky = undefined
+
+--randomGas: Random.Generator GiantPlanet
+--randomGas = undefined
 
 
---
+----
 
 view: Model -> Html Msg
 view model = div []
@@ -83,7 +125,17 @@ view model = div []
 system: Model -> Html Msg
 system {star, innerZone, habitableZone, outerZone} =
     div planetContainerStyle
-        ((text (showStar star)) :: (innerView innerZone) ++ (habitableView habitableZone) ++ (outerView outerZone))
+        ((starView star) :: (innerView innerZone) ++ (habitableView habitableZone) ++ (outerView outerZone))
+
+starView: Star -> Html Msg
+starView star = div starStyle [ (text (showStar star)) ]
+
+starStyle: List (Html.Attribute msg)
+starStyle = 
+    [ style "padding-top" "0.9%"
+    , style "padding-left" "0.9%"
+    , style "font-weight" "bold"
+    ]
 
 planetContainerStyle: List (Html.Attribute msg)
 planetContainerStyle = 
@@ -100,7 +152,7 @@ habitableView = map (\p -> div (planetStyle "#B0EEB0") [ text (showPlanet p) ])
 
 outerView: List PlanetaryFeature -> List (Html Msg)
 outerView = map (\p -> div (planetStyle "LightSteelBlue") [ text (showPlanet p) ])
-
+--i for names
 planetStyle: String -> List (Html.Attribute msg)
 planetStyle color = 
     [ style "height" "100px"
@@ -109,12 +161,13 @@ planetStyle color =
     , style "background-color" color
     , style "padding-top" "0.9%"
     , style "padding-left" "0.9%"
+    , style "font-weight" "bold"
     ]
 
 --
 
 generateButton = div []
-    [ button ([ onClick Generate ] ++ buttonStyle) -- ::
+    [ button ((onClick Generate) :: buttonStyle)
              [ text "Generate" ]
     ]
 
