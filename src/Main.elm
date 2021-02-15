@@ -68,6 +68,7 @@ showPlanet p = case p of
     AsteroidBelt -> "Asteroid Belt"
     AsteroidCluster -> "Asteroid Cluster"
     DustCloud -> "Dust Cloud"
+
     GravityRiptide -> "Gravity Riptide"
     RadiationBurst -> "Radiation Burst"
     SolarFlare -> "Solar Flare"
@@ -107,9 +108,9 @@ randomInner: Random.Generator PlanetaryFeature
 randomInner = (Random.int 21 100) |> Random.andThen (\roll -> 
         if roll <= 29      then Random.constant AsteroidCluster
         else if roll <= 41 then Random.constant DustCloud
-        else if roll <= 45 then Random.constant GasGiant
+        else if roll <= 45 then randomGas -- todo consider increasing the probability of GLASS RAIN GAS GIANTS
         else if roll <= 56 then Random.constant GravityRiptide
-        else if roll <= 76 then Random.constant RockyPlanet
+        else if roll <= 76 then randomRocky
         else if roll <= 89 then Random.constant RadiationBurst
         else                    Random.constant SolarFlare
     )
@@ -122,7 +123,7 @@ randomHabitable = (Random.int 21 100) |> Random.andThen (\roll ->
         else if roll <= 47 then Random.constant DerelictStation
         else if roll <= 58 then Random.constant DustCloud
         else if roll <= 64 then Random.constant GravityRiptide
-        else if roll <= 93 then Random.constant RockyPlanet
+        else if roll <= 93 then randomRocky
         else                    Random.constant StarshipGraveyard
     )
 
@@ -132,17 +133,17 @@ randomOuter =  (Random.int 21 100) |> Random.andThen (\roll ->
         else if roll <= 40 then Random.constant AsteroidCluster
         else if roll <= 46 then Random.constant DerelictStation
         else if roll <= 55 then Random.constant DustCloud
-        else if roll <= 73 then Random.constant GasGiant
+        else if roll <= 73 then randomGas
         else if roll <= 80 then Random.constant GravityRiptide
-        else if roll <= 93 then Random.constant RockyPlanet
+        else if roll <= 93 then randomRocky
         else                    Random.constant StarshipGraveyard
     )
 
---randomRocky: Random.Generator TerrestrialPlanet
---randomRocky = undefined
+randomRocky: Random.Generator PlanetaryFeature--TerrestrialPlanet
+randomRocky = Random.constant RockyPlanet
 
---randomGas: Random.Generator GiantPlanet
---randomGas = undefined
+randomGas: Random.Generator PlanetaryFeature--GiantPlanet
+randomGas = Random.constant GasGiant
 
 
 ----
