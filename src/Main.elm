@@ -21,7 +21,7 @@ regionSizes: Star -> { inner: Int, habitable: Int, outer: Int }
 regionSizes star = case star of 
     RedDwarf -> { inner = 3, habitable = 3, outer = 5 }
     YellowDwarf -> { inner = 3, habitable = 5, outer = 3 }
-    BlueGiant -> { inner = 3, habitable = 3, outer = 3 }
+    BlueGiant -> { inner = 5, habitable = 3, outer = 3 }
 
 showStar: Star -> String
 showStar star = case star of 
@@ -42,7 +42,7 @@ showPlanet p = case p of
 type OrbitalFeature = Moon
 
 init: () -> (Model, Cmd Msg)
-init _ = ({ star = RedDwarf, innerZone = [], habitableZone = [], outerZone = [] }, Cmd.none)
+init _ = ({ star = RedDwarf, innerZone = [], habitableZone = [], outerZone = [] }, Random.generate NewSystem randomModel)
 
 --
 
@@ -81,21 +81,40 @@ view model = div []
     ]
 
 system: Model -> Html Msg
-system {star, innerZone, habitableZone, outerZone} = div []
-    [ text (showStar star)
-    , div zoneStyle (map (\p -> div [] [ text (showPlanet p) ]) innerZone)
-    , div zoneStyle (map (\p -> div [] [ text (showPlanet p) ]) habitableZone)
-    , div zoneStyle (map (\p -> div [] [ text (showPlanet p) ]) outerZone)
+system {star, innerZone, habitableZone, outerZone} =
+    div planetContainerStyle
+        ((text (showStar star)) :: (innerView innerZone) ++ (habitableView habitableZone) ++ (outerView outerZone))
+
+planetContainerStyle: List (Html.Attribute msg)
+planetContainerStyle = 
+    [ style "display" "flex"
+    , style "height" "100px"
+    , style "width" "100%"
     ]
 
-zoneStyle: List (Html.Attribute msg)
-zoneStyle =
-    [ style "border" "5px solid black" ]
+innerView: List PlanetaryFeature -> List (Html Msg)
+innerView = map (\p -> div (planetStyle "#EEB0B0") [ text (showPlanet p) ])
+
+habitableView: List PlanetaryFeature -> List (Html Msg)
+habitableView = map (\p -> div (planetStyle "#B0EEB0") [ text (showPlanet p) ])
+
+outerView: List PlanetaryFeature -> List (Html Msg)
+outerView = map (\p -> div (planetStyle "LightSteelBlue") [ text (showPlanet p) ])
+
+planetStyle: String -> List (Html.Attribute msg)
+planetStyle color = 
+    [ style "height" "100px"
+    , style "width" "200px"
+    , style "margin" "auto"
+    , style "background-color" color
+    , style "padding-top" "0.9%"
+    , style "padding-left" "0.9%"
+    ]
 
 --
 
 generateButton = div []
-    [ button ([ onClick Generate ] ++ buttonStyle)
+    [ button ([ onClick Generate ] ++ buttonStyle) -- ::
              [ text "Generate" ]
     ]
 
