@@ -27,20 +27,22 @@ type alias Model = { star: Star, innerZone: List PlanetaryFeature, habitableZone
 
 ----
 
-type Star = RedDwarf | YellowDwarf | BlueGiant
-stars = [RedDwarf, YellowDwarf, BlueGiant]
+type Star = M | G | F | A
+stars = [M, G, F, A]
 
 regionSizes: Star -> { inner: Int, habitable: Int, outer: Int }
 regionSizes star = case star of 
-    RedDwarf -> { inner = 3, habitable = 3, outer = 5 }
-    YellowDwarf -> { inner = 3, habitable = 5, outer = 3 }
-    BlueGiant -> { inner = 5, habitable = 3, outer = 3 }
+    M -> { inner = 3, habitable = 3, outer = 5 } -- red.
+    G -> { inner = 1, habitable = 5, outer = 3 } -- yellow. the Sun
+    F -> { inner = 3, habitable = 3, outer = 3 } -- white.
+    A -> { inner = 5, habitable = 1, outer = 3 } -- blue.
 
 showStar: Star -> String
 showStar star = case star of 
-    RedDwarf -> "Red Dwarf"
-    YellowDwarf -> "Yellow Dwarf"
-    BlueGiant -> "Blue Giant"
+    M -> "Red Dwarf"
+    G -> "Yellow Dwarf"
+    F -> "Yellow-White Star"
+    A -> "Blue Giant"
 
 --RockyPlanet (List (Maybe OrbitalFeature)) | GasGiant (List (Maybe PlanetaryFeature)) | AsteroidBelt | AsteroidCluster
 type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster | DustCloud | GravityRiptide | RadiationBurst | SolarFlare | DerelictStation | StarshipGraveyard
@@ -78,7 +80,7 @@ showPlanet p = case p of
 type OrbitalFeature = Moon
 
 init: () -> (Model, Cmd Msg)
-init _ = ({ star = RedDwarf, innerZone = [], habitableZone = [], outerZone = [] }, Random.generate NewSystem randomModel)
+init _ = ({ star = M, innerZone = [], habitableZone = [], outerZone = [] }, Random.generate NewSystem randomModel)
 
 ----
 
@@ -96,7 +98,7 @@ randomModel: Random.Generator Model
 randomModel = randomStar |> Random.andThen planetsForStar
 
 randomStar: Random.Generator Star
-randomStar = Random.uniform RedDwarf [ YellowDwarf, BlueGiant ]
+randomStar = Random.uniform M [ G, A ]
 
 planetsForStar star = Random.map3 (\i -> \h -> \o -> Model star i h o)
                                   (Random.list (regionSizes star).inner randomInner)
