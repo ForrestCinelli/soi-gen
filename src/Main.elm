@@ -30,6 +30,8 @@ type alias Model = { star: Star, innerZone: List PlanetaryFeature, habitableZone
 type Star = M | G | F | B | VII
 stars = [M, G, F, B, VII]
 
+type Zone = Inner | Habitable | Outer
+
 regionSizes: Star -> { inner: Int, habitable: Int, outer: Int }
 regionSizes star = case star of 
     VII -> { inner = 0, habitable = 1, outer = 5 }
@@ -47,7 +49,17 @@ showStar star = case star of
     VII -> "White Dwarf"
 
 --RockyPlanet (List (Maybe OrbitalFeature)) | GasGiant (List (Maybe PlanetaryFeature)) | AsteroidBelt | AsteroidCluster
-type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster | DustCloud | GravityRiptide | RadiationBurst | SolarFlare | DerelictStation DerelicitStationOrigin | StarshipGraveyard StarshipGraveyardOrigin
+type PlanetaryFeature
+    = RockyPlanet TerrestrialPlanet
+    | GasGiant 
+    | AsteroidBelt 
+    | AsteroidCluster 
+    | DustCloud 
+    | GravityRiptide 
+    | RadiationBurst 
+    | SolarFlare 
+    | DerelictStation DerelicitStationOrigin 
+    | StarshipGraveyard StarshipGraveyardOrigin
 type TerrestrialPlanet = TerrestrialPlanet PlanetBody PlanetGravity Atmosphere Temperature (List OrbitalFeature)
 type GiantPlanet = GiantPlanet GasBody GasGravity (List OrbitalFeature)
 
@@ -65,12 +77,11 @@ type AtmosphereComposition = Deadly | Corrosive | Toxic | Tainted | Pure
 type StarshipGraveyardOrigin = CrushedFleet | FleetEngagement | LostExplorers | PlunderedConvoy | Skirmish | Unknown
 type DerelicitStationOrigin = EgarianVoidMaze | EldarOrrery | EldarGate | OrkRok | DefenseStation | MonitorStation | StryxisCollection | XenosDefenseStation | XenosMonitorStation
 
-tmpPlanet = TerrestrialPlanet LowMass Low None Burning []
 tmpGiant = GiantPlanet Dwarf Weak []
 
 showPlanet: PlanetaryFeature -> String
 showPlanet p = case p of
-    RockyPlanet -> "Planet"
+    RockyPlanet deets -> "Planet"
     GasGiant -> "Gas Giant"
     AsteroidBelt -> "Asteroid Belt"
     AsteroidCluster -> "Asteroid Cluster"
@@ -81,6 +92,44 @@ showPlanet p = case p of
     SolarFlare -> "Solar Flare"
     DerelictStation o -> "Derelict Station"
     StarshipGraveyard o -> "Starship Graveyard"
+
+showBody: PlanetBody -> String
+showBody b = case b of 
+    LowMass -> "Low Mass"
+    Small -> "Small"
+    SmallDense -> "Small but dense"
+    Large -> "Large"
+    LargeDense -> "Large and dense"
+    Vast -> "Vast"
+
+showGravity: PlanetGravity -> String
+showGravity g = case g of
+    Low -> "low gravity"
+    Normal -> "terra-like gravity"
+    High -> "high gravity"
+
+showTemperature: Temperature -> String
+showTemperature t = case t of 
+    Burning -> "Burning"
+    Hot -> "Hot"
+    Temperate -> "Temperate"
+    Cold -> "Cold"
+    Ice -> "Frozen"
+
+showAtmosphere: Atmosphere -> String
+showAtmosphere a = case a of 
+    None -> "No atmosphere"
+    Thin c -> "Thin, " ++ (showAtmosphereComposition c) ++ " atmosphere"
+    Moderate c -> "Moderate, " ++ (showAtmosphereComposition c) ++ " atmosphere"
+    Heavy c -> "Heavy, " ++ (showAtmosphereComposition c) ++ " atmosphere"
+
+showAtmosphereComposition: AtmosphereComposition -> String
+showAtmosphereComposition c = case c of 
+    Deadly -> "Deadly"
+    Corrosive -> "Corrosive"
+    Toxic -> "Toxic"
+    Tainted -> "Tainted"
+    Pure -> "Pure"
 
 showGraveyardOrigin: StarshipGraveyardOrigin -> String
 showGraveyardOrigin o = "Origin: " ++ (case o of
@@ -140,7 +189,7 @@ randomInner = (Random.int 21 100) |> Random.andThen (\roll ->
         else if roll <= 41 then Random.constant DustCloud
         else if roll <= 45 then randomGas -- todo consider increasing the probability of GLASS RAIN GAS GIANTS
         else if roll <= 56 then Random.constant GravityRiptide
-        else if roll <= 76 then randomRocky
+        else if roll <= 76 then Random.map (\tp -> RockyPlanet tp) (randomRocky Inner)
         else if roll <= 89 then Random.constant RadiationBurst
         else                    Random.constant SolarFlare
     )
@@ -153,7 +202,7 @@ randomHabitable = (Random.int 21 100) |> Random.andThen (\roll ->
         else if roll <= 47 then Random.map (\o -> DerelictStation o) randomStationOrigin
         else if roll <= 58 then Random.constant DustCloud
         else if roll <= 64 then Random.constant GravityRiptide
-        else if roll <= 93 then randomRocky
+        else if roll <= 93 then Random.map (\tp -> RockyPlanet tp) (randomRocky Habitable)
         else                    Random.map (\o -> StarshipGraveyard o) randomGraveyardOrigin
     )
 
@@ -165,14 +214,96 @@ randomOuter =  (Random.int 21 100) |> Random.andThen (\roll ->
         else if roll <= 55 then Random.constant DustCloud
         else if roll <= 73 then randomGas
         else if roll <= 80 then Random.constant GravityRiptide
-        else if roll <= 93 then randomRocky
+        else if roll <= 93 then Random.map (\tp -> RockyPlanet tp) (randomRocky Outer)
         else                    Random.map (\o -> StarshipGraveyard o) randomGraveyardOrigin
     )
 
 
 
-randomRocky: Random.Generator PlanetaryFeature--TerrestrialPlanet
-randomRocky = Random.constant RockyPlanet
+randomRocky: Zone -> Random.Generator TerrestrialPlanet
+randomRocky zone =
+    randomBody |> Random.andThen (\body -> 
+        randomGravity body |> Random.andThen (\gravity ->
+            randomAtmosphere gravity |> Random.andThen (\atmosphere -> 
+                randomTemperature zone atmosphere |> Random.andThen (\temperature -> 
+                    Random.constant (TerrestrialPlanet body gravity atmosphere temperature [])))))
+
+
+randomBody: Random.Generator PlanetBody
+randomBody = Random.map (\roll ->
+        if roll <= 1      then LowMass
+        else if roll <= 3 then Small
+        else if roll <= 4 then SmallDense
+        else if roll <= 7 then Large
+        else if roll <= 8 then LargeDense
+        else                   Vast
+    ) (Random.int 1 10)
+
+randomGravity: PlanetBody -> Random.Generator PlanetGravity
+randomGravity body = Random.map (\base ->
+    let 
+        modifier = 
+            case body of 
+                LowMass -> -7
+                Small -> -5
+                SmallDense -> 0
+                Large -> 0
+                LargeDense -> 5
+                Vast -> 4
+        
+        roll = base + modifier
+    in 
+        if roll <= 2      then Low
+        else if roll <= 8 then Normal
+        else                   High
+    ) (Random.int 1 10)
+
+randomAtmosphere: PlanetGravity -> Random.Generator Atmosphere
+randomAtmosphere g = (Random.int 1 10) |> Random.andThen (\base -> 
+        let
+            adjustment = 
+                case g of 
+                    Low -> -2
+                    Normal -> 0
+                    High -> 1
+            roll = base + adjustment
+            ac = randomAtmosphericComposition
+        in 
+            if roll <= 1       then Random.constant None
+            else if roll <= 4  then ac |> Random.map (\c -> Thin c) 
+            else if roll <= 9  then ac |> Random.map (\c -> Moderate c)
+            else                    ac |> Random.map (\c -> Heavy c)
+    )
+
+randomAtmosphericComposition: Random.Generator AtmosphereComposition
+randomAtmosphericComposition = Random.map (\roll -> 
+        if roll <= 1      then Deadly
+        else if roll <= 2 then Corrosive
+        else if roll <= 5 then Toxic
+        else if roll <= 7 then Tainted
+        else                   Pure
+    ) (Random.int 1 10)
+
+randomTemperature: Zone -> Atmosphere -> Random.Generator Temperature
+randomTemperature zone atmosphere = 
+    Random.map (\base -> 
+        let
+            adjustment = 
+                case (zone, atmosphere) of 
+                    (Inner, None) -> -666 -- always burning
+                    (Inner, x) -> -6
+                    (Habitable, None) -> 666 -- todo randomize
+                    (Habitable, x) -> 0
+                    (Outer, None) -> 666 -- always frozen
+                    (Outer, x) -> 6
+            roll = base + adjustment
+        in 
+            if roll <= 0       then Burning
+            else if roll <= 3  then Hot
+            else if roll <= 7  then Temperate
+            else if roll <= 10 then Cold
+            else                    Ice
+    ) (Random.int 1 10)
 
 randomGas: Random.Generator PlanetaryFeature--GiantPlanet
 randomGas = Random.constant GasGiant
@@ -238,7 +369,6 @@ starStyle =
 planetContainerStyle: List (Html.Attribute msg)
 planetContainerStyle = 
     [ style "display" "flex"
-    , style "height" "100px"
     , style "width" "100%"
     ]
 
@@ -253,7 +383,8 @@ outerView = map (\p -> div (planetStyle "LightSteelBlue") [ planetView p ])
 --i for names
 planetStyle: String -> List (Html.Attribute msg)
 planetStyle color = 
-    [ style "height" "100px"
+    [ 
+    style "height" "200px"
     , style "width" "200px"
     , style "margin" "auto"
     , style "background-color" color
@@ -267,8 +398,14 @@ planetView: PlanetaryFeature -> Html Msg
 planetView planet = case planet of
     DerelictStation o -> div [] [ text (showPlanet planet), p planetDetailStyle [ text (showDerelictStationOrigin o) ] ]
     StarshipGraveyard o -> div [] [ text (showPlanet planet), p planetDetailStyle [ text (showGraveyardOrigin o) ] ]
+    RockyPlanet (TerrestrialPlanet body gravity atmosphere temperature orbitalFeatures) -> 
+        div [] 
+        [ text (showPlanet planet)
+        , p planetDetailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity))]
+        , p planetDetailStyle [ text ((showTemperature temperature) ++ " world") ]
+        , p planetDetailStyle [ text (showAtmosphere atmosphere) ]
+        ]
     x -> text (showPlanet x)
-
 
 
 planetDetailStyle: List (Html.Attribute msg)
@@ -277,6 +414,7 @@ planetDetailStyle =
     , style "font-style" "italic"
     , style "font-size" "small"
     ]
+
 --
 
 generateButton = div []
