@@ -47,7 +47,7 @@ showStar star = case star of
     VII -> "White Dwarf"
 
 --RockyPlanet (List (Maybe OrbitalFeature)) | GasGiant (List (Maybe PlanetaryFeature)) | AsteroidBelt | AsteroidCluster
-type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster | DustCloud | GravityRiptide | RadiationBurst | SolarFlare | DerelictStation | StarshipGraveyard StarshipGraveyardOrigin
+type PlanetaryFeature = RockyPlanet | GasGiant | AsteroidBelt | AsteroidCluster | DustCloud | GravityRiptide | RadiationBurst | SolarFlare | DerelictStation DerelicitStationOrigin | StarshipGraveyard StarshipGraveyardOrigin
 type TerrestrialPlanet = TerrestrialPlanet PlanetBody PlanetGravity Atmosphere Temperature (List OrbitalFeature)
 type GiantPlanet = GiantPlanet GasBody GasGravity (List OrbitalFeature)
 
@@ -63,6 +63,7 @@ type Atmosphere = None | Thin AtmosphereComposition | Moderate AtmosphereComposi
 type AtmosphereComposition = Deadly | Corrosive | Toxic | Tainted | Pure
 
 type StarshipGraveyardOrigin = CrushedFleet | FleetEngagement | LostExplorers | PlunderedConvoy | Skirmish | Unknown
+type DerelicitStationOrigin = EgarianVoidMaze | EldarOrrery | EldarGate | OrkRok | DefenseStation | MonitorStation | StryxisCollection | XenosDefenseStation | XenosMonitorStation
 
 tmpPlanet = TerrestrialPlanet LowMass Low None Burning []
 tmpGiant = GiantPlanet Dwarf Weak []
@@ -78,7 +79,7 @@ showPlanet p = case p of
     GravityRiptide -> "Gravity Riptide"
     RadiationBurst -> "Radiation Burst"
     SolarFlare -> "Solar Flare"
-    DerelictStation -> "Derelict Station"
+    DerelictStation o -> "Derelict Station"
     StarshipGraveyard o -> "Starship Graveyard"
 
 showGraveyardOrigin: StarshipGraveyardOrigin -> String
@@ -89,6 +90,19 @@ showGraveyardOrigin o = "Origin: " ++ (case o of
         PlunderedConvoy -> "Plundered Convoy"
         Skirmish -> "Skirmish"
         Unknown -> "Unknown Provenance"
+    )
+
+showDerelictStationOrigin: DerelicitStationOrigin -> String
+showDerelictStationOrigin o = "Origin: " ++ (case o of
+        EgarianVoidMaze -> "Egarian Void-maze"
+        EldarOrrery -> "Eldar Orrery" 
+        EldarGate -> "Eldar Gate" 
+        OrkRok -> "Ork Rok" 
+        DefenseStation -> "STC Defense Station" 
+        MonitorStation -> "STC Monitor Station" 
+        StryxisCollection -> "Syryxis Collection"
+        XenosDefenseStation -> "Xenos Defense Station" 
+        XenosMonitorStation -> "Xenos Monitor Station"
     )
 
 type OrbitalFeature = Moon
@@ -136,7 +150,7 @@ randomHabitable: Random.Generator PlanetaryFeature
 randomHabitable = (Random.int 21 100) |> Random.andThen (\roll ->
         if roll <= 30      then Random.constant AsteroidBelt
         else if roll <= 41 then Random.constant AsteroidCluster
-        else if roll <= 47 then Random.constant DerelictStation
+        else if roll <= 47 then Random.map (\o -> DerelictStation o) randomStationOrigin
         else if roll <= 58 then Random.constant DustCloud
         else if roll <= 64 then Random.constant GravityRiptide
         else if roll <= 93 then randomRocky
@@ -147,7 +161,7 @@ randomOuter: Random.Generator PlanetaryFeature
 randomOuter =  (Random.int 21 100) |> Random.andThen (\roll ->
         if roll <= 29 then      Random.constant AsteroidBelt
         else if roll <= 40 then Random.constant AsteroidCluster
-        else if roll <= 46 then Random.constant DerelictStation
+        else if roll <= 46 then Random.map (\o -> DerelictStation o) randomStationOrigin
         else if roll <= 55 then Random.constant DustCloud
         else if roll <= 73 then randomGas
         else if roll <= 80 then Random.constant GravityRiptide
@@ -171,6 +185,19 @@ randomGraveyardOrigin = (Random.int 1 100) |> Random.andThen (\roll ->
         else if roll <= 65 then Random.constant PlunderedConvoy
         else if roll <= 90 then Random.constant Skirmish
         else                    Random.constant Unknown
+    )
+
+randomStationOrigin: Random.Generator DerelicitStationOrigin
+randomStationOrigin = (Random.int 1 100) |> Random.andThen (\roll ->
+        if roll <= 10 then      Random.constant EgarianVoidMaze
+        else if roll <= 20 then Random.constant EldarOrrery
+        else if roll <= 25 then Random.constant EldarGate
+        else if roll <= 40 then Random.constant OrkRok
+        else if roll <= 50 then Random.constant DefenseStation
+        else if roll <= 65 then Random.constant MonitorStation
+        else if roll <= 76 then Random.constant StryxisCollection
+        else if roll <= 85 then Random.constant XenosDefenseStation
+        else                    Random.constant XenosMonitorStation
     )
 
 ----
@@ -238,6 +265,7 @@ planetStyle color =
 
 planetView: PlanetaryFeature -> Html Msg
 planetView planet = case planet of
+    DerelictStation o -> div [] [ text (showPlanet planet), p planetDetailStyle [ text (showDerelictStationOrigin o) ] ]
     StarshipGraveyard o -> div [] [ text (showPlanet planet), p planetDetailStyle [ text (showGraveyardOrigin o) ] ]
     x -> text (showPlanet x)
 
