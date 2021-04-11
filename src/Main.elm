@@ -21,7 +21,7 @@ import List exposing (head, length, tail, map)
 import Maybe
 import Random
 
-main = Browser.element { init = init, update = update, subscriptions = \_ -> Sub.none, view = view }
+main = Browser.document { init = init, update = update, subscriptions = \_ -> Sub.none, view = \modl -> { title = "SOI Gen", body = view modl } }
 
 type alias Model = { star: Star, innerZone: List PlanetaryFeature, habitableZone: List PlanetaryFeature, outerZone: List PlanetaryFeature }
 
