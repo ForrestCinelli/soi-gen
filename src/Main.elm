@@ -120,7 +120,7 @@ showAtmosphere: Atmosphere -> String
 showAtmosphere a = case a of 
     None -> "No atmosphere"
     Thin c -> "Thin, " ++ (showAtmosphereComposition c) ++ " atmosphere"
-    Moderate c -> "Moderate, " ++ (showAtmosphereComposition c) ++ " atmosphere"
+    Moderate c -> "Moderately thick, " ++ (showAtmosphereComposition c) ++ " atmosphere"
     Heavy c -> "Heavy, " ++ (showAtmosphereComposition c) ++ " atmosphere"
 
 showAtmosphereComposition: AtmosphereComposition -> String
