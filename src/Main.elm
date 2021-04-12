@@ -17,6 +17,7 @@ import Html.Attributes exposing (style, attribute)
 import List exposing (head, length, tail, map)
 import Maybe
 import Random
+import Random.Extra
 
 main = Browser.document 
     { init = init
@@ -25,12 +26,14 @@ main = Browser.document
     , view = \modl -> { title = "SOI Gen", body = [ view modl ] }
     }
 
-type alias Model = { star: Star, innerZone: List PlanetaryFeature, habitableZone: List PlanetaryFeature, outerZone: List PlanetaryFeature }
+type alias Model = { star: Star, feature: SystemFeature, innerZone: List PlanetaryFeature, habitableZone: List PlanetaryFeature, outerZone: List PlanetaryFeature }
 
 ----
 
 type Star = M | G | F | B | VII
 stars = [M, G, F, B, VII]
+
+type SystemFeature = Bountiful | GravityTides | Haven | IllOmened | PirateDen | RuinedEmpire | Starfarers | StellarAnomaly | WarpStasis | WarpTurbulence
 
 type Zone = Inner | Habitable | Outer
 
@@ -78,6 +81,19 @@ type AtmosphereComposition = Deadly | Corrosive | Toxic | Tainted | Pure
 type StarshipGraveyardOrigin = CrushedFleet | FleetEngagement | LostExplorers | PlunderedConvoy | Skirmish | Unknown
 type DerelicitStationOrigin = EgarianVoidMaze | EldarOrrery | EldarGate | OrkRok | DefenseStation | MonitorStation | StryxisCollection | XenosDefenseStation | XenosMonitorStation
 
+
+showSystemFeature: SystemFeature -> String
+showSystemFeature sf = case sf of 
+    Bountiful -> "Bountiful" 
+    GravityTides -> "Gravity Tides" 
+    Haven -> "Haven" 
+    IllOmened -> "Ill-Omened" 
+    PirateDen -> "Pirate Den" 
+    RuinedEmpire -> "Ruined Empire" 
+    Starfarers -> "Starfarers" 
+    StellarAnomaly -> "Stellar Anomaly" 
+    WarpStasis -> "Warp Stasis"
+    WarpTurbulence -> "Warp Turbulence"
 
 showPlanet: PlanetaryFeature -> String
 showPlanet p = case p of
@@ -170,7 +186,7 @@ showDerelictStationOrigin o = "Origin: " ++ (case o of
 type OrbitalFeature = Moon
 
 init: () -> (Model, Cmd Msg)
-init _ = ({ star = M, innerZone = [], habitableZone = [], outerZone = [] }, Random.generate NewSystem randomModel)
+init _ = ({ star = M, feature = IllOmened, innerZone = [], habitableZone = [], outerZone = [] }, Random.generate NewSystem randomModel)
 
 ----
 
@@ -185,15 +201,33 @@ update msg model = case msg of
         )
 
 randomModel: Random.Generator Model
-randomModel = randomStar |> Random.andThen planetsForStar
+randomModel = Random.Extra.andThen2 planetsForStar
+                                    randomSystemFeature
+                                    randomStar
+
+--randomStar |> (\star -> Random.andThen randomSystemFeature |> Random.andThen (planetsForStar star))
 
 randomStar: Random.Generator Star
 randomStar = Random.uniform M [ G, F, B ]
 
-planetsForStar star = Random.map3 (\i -> \h -> \o -> Model star i h o)
-                                  (Random.list (regionSizes star).inner randomInner)
-                                  (Random.list (regionSizes star).habitable randomHabitable)
-                                  (Random.list (regionSizes star).outer randomOuter)
+randomSystemFeature: Random.Generator SystemFeature
+randomSystemFeature = Random.map (\roll ->
+    if roll <= 1 then      Bountiful
+    else if roll <= 2 then GravityTides
+    else if roll <= 3 then Haven
+    else if roll <= 4 then IllOmened
+    else if roll <= 5 then PirateDen
+    else if roll <= 6 then RuinedEmpire
+    else if roll <= 7 then Starfarers
+    else if roll <= 8 then StellarAnomaly
+    else if roll <= 9 then WarpStasis
+    else                   WarpTurbulence
+    ) (Random.int 1 10)
+
+planetsForStar feature star = Random.map3 (\i -> \h -> \o -> Model star feature i h o)
+                                          (Random.list (regionSizes star).inner randomInner)
+                                          (Random.list (regionSizes star).habitable randomHabitable)
+                                          (Random.list (regionSizes star).outer randomOuter)
 
 
 randomInner: Random.Generator PlanetaryFeature
@@ -378,14 +412,15 @@ view model = div []
     ]
 
 system: Model -> Html Msg
-system {star, innerZone, habitableZone, outerZone} =
+system {star, feature, innerZone, habitableZone, outerZone} =
     div planetContainerStyle
-        ((starView star) :: (innerView innerZone) ++ (habitableView habitableZone) ++ (outerView outerZone))
+        ((starView star feature) :: (innerView innerZone) ++ (habitableView habitableZone) ++ (outerView outerZone))
 
-starView: Star -> Html Msg
-starView star = div starStyle 
+starView: Star -> SystemFeature -> Html Msg
+starView star feature = div starStyle 
     [ img (starImg star) []
-    , (text (showStar star))
+    , div [ style "padding-left" "1vw" ] [ text (showStar star) ]
+    , div ((style "padding-left" "1vw") :: detailStyle) [ text (showSystemFeature feature) ]
     ]
 
 starImg star = (case star of
@@ -394,16 +429,20 @@ starImg star = (case star of
     G -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowDwarf.jpg"
     F -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowWhiteDwarf.jpg"
     B -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/BlueGiant.gif"
-    ) :: (style "max-width" "20vw") :: (style "max-height" "20vh") :: []
-
-starStyle: List (Html.Attribute msg)
-starStyle = 
+    ) :: 
     [ style "padding-top" "0.0%"
     , style "padding-left" "0.0%"
     , style "padding-right" "0.0%"
+    , style "max-width" "20vw"
+    , style "max-height" "20vh"
+    ]
+
+starStyle: List (Html.Attribute msg)
+starStyle = 
+    [ 
 --    , style "height" "20%"
 --    , style "width" "20%"
-    , style "font-weight" "bold"
+     style "font-weight" "bold"
     ]
 
 planetContainerStyle: List (Html.Attribute msg)
@@ -435,25 +474,25 @@ planetStyle color =
 
 planetView: PlanetaryFeature -> Html Msg
 planetView planet = case planet of
-    DerelictStation o -> div [] [ text (showPlanet planet), p planetDetailStyle [ text (showDerelictStationOrigin o) ] ]
-    StarshipGraveyard o -> div [] [ text (showPlanet planet), p planetDetailStyle [ text (showGraveyardOrigin o) ] ]
+    DerelictStation o -> div [] [ text (showPlanet planet), p detailStyle [ text (showDerelictStationOrigin o) ] ]
+    StarshipGraveyard o -> div [] [ text (showPlanet planet), p detailStyle [ text (showGraveyardOrigin o) ] ]
     RockyPlanet (TerrestrialPlanet body gravity atmosphere temperature orbitalFeatures) -> 
         div [] 
         [ text (showPlanet planet)
-        , p planetDetailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
-        , p planetDetailStyle [ text ((showTemperature temperature) ++ " world") ]
-        , p planetDetailStyle [ text (showAtmosphere atmosphere) ]
+        , p detailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
+        , p detailStyle [ text ((showTemperature temperature) ++ " world") ]
+        , p detailStyle [ text (showAtmosphere atmosphere) ]
         ]
     GasGiant (GiantPlanet body gravity orbitalFeatures) ->
         div []
         [ text (showPlanet planet)
-        , p planetDetailStyle [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
+        , p detailStyle [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
         ]
     x -> text (showPlanet x)
 
 
-planetDetailStyle: List (Html.Attribute msg)
-planetDetailStyle = 
+detailStyle: List (Html.Attribute msg)
+detailStyle = 
     [ style "font-weight" "normal"
     , style "font-style" "italic"
     , style "font-size" "small"

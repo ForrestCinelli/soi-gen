@@ -5241,6 +5241,7 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$document = _Browser_document;
+var $author$project$Main$IllOmened = {$: 'IllOmened'};
 var $author$project$Main$M = {$: 'M'};
 var $author$project$Main$NewSystem = function (a) {
 	return {$: 'NewSystem', a: a};
@@ -5365,9 +5366,23 @@ var $elm$random$Random$andThen = F2(
 				return genB(newSeed);
 			});
 	});
-var $author$project$Main$Model = F4(
-	function (star, innerZone, habitableZone, outerZone) {
-		return {habitableZone: habitableZone, innerZone: innerZone, outerZone: outerZone, star: star};
+var $elm_community$random_extra$Random$Extra$andThen2 = F3(
+	function (constructor, generatorA, generatorB) {
+		return A2(
+			$elm$random$Random$andThen,
+			function (a) {
+				return A2(
+					$elm$random$Random$andThen,
+					function (b) {
+						return A2(constructor, a, b);
+					},
+					generatorB);
+			},
+			generatorA);
+	});
+var $author$project$Main$Model = F5(
+	function (star, feature, innerZone, habitableZone, outerZone) {
+		return {feature: feature, habitableZone: habitableZone, innerZone: innerZone, outerZone: outerZone, star: star};
 	});
 var $elm$random$Random$listHelp = F4(
 	function (revList, n, gen, seed) {
@@ -5815,29 +5830,30 @@ var $author$project$Main$regionSizes = function (star) {
 			return {habitable: 1, inner: 5, outer: 3};
 	}
 };
-var $author$project$Main$planetsForStar = function (star) {
-	return A4(
-		$elm$random$Random$map3,
-		function (i) {
-			return function (h) {
-				return function (o) {
-					return A4($author$project$Main$Model, star, i, h, o);
+var $author$project$Main$planetsForStar = F2(
+	function (feature, star) {
+		return A4(
+			$elm$random$Random$map3,
+			function (i) {
+				return function (h) {
+					return function (o) {
+						return A5($author$project$Main$Model, star, feature, i, h, o);
+					};
 				};
-			};
-		},
-		A2(
-			$elm$random$Random$list,
-			$author$project$Main$regionSizes(star).inner,
-			$author$project$Main$randomInner),
-		A2(
-			$elm$random$Random$list,
-			$author$project$Main$regionSizes(star).habitable,
-			$author$project$Main$randomHabitable),
-		A2(
-			$elm$random$Random$list,
-			$author$project$Main$regionSizes(star).outer,
-			$author$project$Main$randomOuter));
-};
+			},
+			A2(
+				$elm$random$Random$list,
+				$author$project$Main$regionSizes(star).inner,
+				$author$project$Main$randomInner),
+			A2(
+				$elm$random$Random$list,
+				$author$project$Main$regionSizes(star).habitable,
+				$author$project$Main$randomHabitable),
+			A2(
+				$elm$random$Random$list,
+				$author$project$Main$regionSizes(star).outer,
+				$author$project$Main$randomOuter));
+	});
 var $author$project$Main$B = {$: 'B'};
 var $author$project$Main$F = {$: 'F'};
 var $author$project$Main$G = {$: 'G'};
@@ -5919,10 +5935,25 @@ var $author$project$Main$randomStar = A2(
 	$author$project$Main$M,
 	_List_fromArray(
 		[$author$project$Main$G, $author$project$Main$F, $author$project$Main$B]));
-var $author$project$Main$randomModel = A2($elm$random$Random$andThen, $author$project$Main$planetsForStar, $author$project$Main$randomStar);
+var $author$project$Main$Bountiful = {$: 'Bountiful'};
+var $author$project$Main$GravityTides = {$: 'GravityTides'};
+var $author$project$Main$Haven = {$: 'Haven'};
+var $author$project$Main$PirateDen = {$: 'PirateDen'};
+var $author$project$Main$RuinedEmpire = {$: 'RuinedEmpire'};
+var $author$project$Main$Starfarers = {$: 'Starfarers'};
+var $author$project$Main$StellarAnomaly = {$: 'StellarAnomaly'};
+var $author$project$Main$WarpStasis = {$: 'WarpStasis'};
+var $author$project$Main$WarpTurbulence = {$: 'WarpTurbulence'};
+var $author$project$Main$randomSystemFeature = A2(
+	$elm$random$Random$map,
+	function (roll) {
+		return (roll <= 1) ? $author$project$Main$Bountiful : ((roll <= 2) ? $author$project$Main$GravityTides : ((roll <= 3) ? $author$project$Main$Haven : ((roll <= 4) ? $author$project$Main$IllOmened : ((roll <= 5) ? $author$project$Main$PirateDen : ((roll <= 6) ? $author$project$Main$RuinedEmpire : ((roll <= 7) ? $author$project$Main$Starfarers : ((roll <= 8) ? $author$project$Main$StellarAnomaly : ((roll <= 9) ? $author$project$Main$WarpStasis : $author$project$Main$WarpTurbulence))))))));
+	},
+	A2($elm$random$Random$int, 1, 10));
+var $author$project$Main$randomModel = A3($elm_community$random_extra$Random$Extra$andThen2, $author$project$Main$planetsForStar, $author$project$Main$randomSystemFeature, $author$project$Main$randomStar);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{habitableZone: _List_Nil, innerZone: _List_Nil, outerZone: _List_Nil, star: $author$project$Main$M},
+		{feature: $author$project$Main$IllOmened, habitableZone: _List_Nil, innerZone: _List_Nil, outerZone: _List_Nil, star: $author$project$Main$M},
 		A2($elm$random$Random$generate, $author$project$Main$NewSystem, $author$project$Main$randomModel));
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6003,13 +6034,13 @@ var $author$project$Main$planetStyle = function (color) {
 			A2($elm$html$Html$Attributes$style, 'font-size', 'medium')
 		]);
 };
-var $elm$html$Html$p = _VirtualDom_node('p');
-var $author$project$Main$planetDetailStyle = _List_fromArray(
+var $author$project$Main$detailStyle = _List_fromArray(
 	[
 		A2($elm$html$Html$Attributes$style, 'font-weight', 'normal'),
 		A2($elm$html$Html$Attributes$style, 'font-style', 'italic'),
 		A2($elm$html$Html$Attributes$style, 'font-size', 'small')
 	]);
+var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$showAtmosphereComposition = function (c) {
 	switch (c.$) {
 		case 'Deadly':
@@ -6184,7 +6215,7 @@ var $author$project$Main$planetView = function (planet) {
 						$author$project$Main$showPlanet(planet)),
 						A2(
 						$elm$html$Html$p,
-						$author$project$Main$planetDetailStyle,
+						$author$project$Main$detailStyle,
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6202,7 +6233,7 @@ var $author$project$Main$planetView = function (planet) {
 						$author$project$Main$showPlanet(planet)),
 						A2(
 						$elm$html$Html$p,
-						$author$project$Main$planetDetailStyle,
+						$author$project$Main$detailStyle,
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6225,7 +6256,7 @@ var $author$project$Main$planetView = function (planet) {
 						$author$project$Main$showPlanet(planet)),
 						A2(
 						$elm$html$Html$p,
-						$author$project$Main$planetDetailStyle,
+						$author$project$Main$detailStyle,
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6233,7 +6264,7 @@ var $author$project$Main$planetView = function (planet) {
 							])),
 						A2(
 						$elm$html$Html$p,
-						$author$project$Main$planetDetailStyle,
+						$author$project$Main$detailStyle,
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6241,7 +6272,7 @@ var $author$project$Main$planetView = function (planet) {
 							])),
 						A2(
 						$elm$html$Html$p,
-						$author$project$Main$planetDetailStyle,
+						$author$project$Main$detailStyle,
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6262,7 +6293,7 @@ var $author$project$Main$planetView = function (planet) {
 						$author$project$Main$showPlanet(planet)),
 						A2(
 						$elm$html$Html$p,
-						$author$project$Main$planetDetailStyle,
+						$author$project$Main$detailStyle,
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6325,6 +6356,30 @@ var $author$project$Main$showStar = function (star) {
 			return 'White Dwarf';
 	}
 };
+var $author$project$Main$showSystemFeature = function (sf) {
+	switch (sf.$) {
+		case 'Bountiful':
+			return 'Bountiful';
+		case 'GravityTides':
+			return 'Gravity Tides';
+		case 'Haven':
+			return 'Haven';
+		case 'IllOmened':
+			return 'Ill-Omened';
+		case 'PirateDen':
+			return 'Pirate Den';
+		case 'RuinedEmpire':
+			return 'Ruined Empire';
+		case 'Starfarers':
+			return 'Starfarers';
+		case 'StellarAnomaly':
+			return 'Stellar Anomaly';
+		case 'WarpStasis':
+			return 'Warp Stasis';
+		default:
+			return 'Warp Turbulence';
+	}
+};
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -6350,37 +6405,57 @@ var $author$project$Main$starImg = function (star) {
 					return A2($elm$html$Html$Attributes$attribute, 'src', 'file:///C:/Users/Forre/elm/soi-gen/BlueGiant.gif');
 			}
 		}(),
-		A2(
-			$elm$core$List$cons,
-			A2($elm$html$Html$Attributes$style, 'max-width', '20vw'),
-			A2(
-				$elm$core$List$cons,
-				A2($elm$html$Html$Attributes$style, 'max-height', '20vh'),
-				_List_Nil)));
+		_List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$style, 'padding-top', '0.0%'),
+				A2($elm$html$Html$Attributes$style, 'padding-left', '0.0%'),
+				A2($elm$html$Html$Attributes$style, 'padding-right', '0.0%'),
+				A2($elm$html$Html$Attributes$style, 'max-width', '20vw'),
+				A2($elm$html$Html$Attributes$style, 'max-height', '20vh')
+			]));
 };
 var $author$project$Main$starStyle = _List_fromArray(
 	[
-		A2($elm$html$Html$Attributes$style, 'padding-top', '0.0%'),
-		A2($elm$html$Html$Attributes$style, 'padding-left', '0.0%'),
-		A2($elm$html$Html$Attributes$style, 'padding-right', '0.0%'),
 		A2($elm$html$Html$Attributes$style, 'font-weight', 'bold')
 	]);
-var $author$project$Main$starView = function (star) {
-	return A2(
-		$elm$html$Html$div,
-		$author$project$Main$starStyle,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$img,
-				$author$project$Main$starImg(star),
-				_List_Nil),
-				$elm$html$Html$text(
-				$author$project$Main$showStar(star))
-			]));
-};
+var $author$project$Main$starView = F2(
+	function (star, feature) {
+		return A2(
+			$elm$html$Html$div,
+			$author$project$Main$starStyle,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$img,
+					$author$project$Main$starImg(star),
+					_List_Nil),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'padding-left', '1vw')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							$author$project$Main$showStar(star))
+						])),
+					A2(
+					$elm$html$Html$div,
+					A2(
+						$elm$core$List$cons,
+						A2($elm$html$Html$Attributes$style, 'padding-left', '1vw'),
+						$author$project$Main$detailStyle),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							$author$project$Main$showSystemFeature(feature))
+						]))
+				]));
+	});
 var $author$project$Main$system = function (_v0) {
 	var star = _v0.star;
+	var feature = _v0.feature;
 	var innerZone = _v0.innerZone;
 	var habitableZone = _v0.habitableZone;
 	var outerZone = _v0.outerZone;
@@ -6389,7 +6464,7 @@ var $author$project$Main$system = function (_v0) {
 		$author$project$Main$planetContainerStyle,
 		A2(
 			$elm$core$List$cons,
-			$author$project$Main$starView(star),
+			A2($author$project$Main$starView, star, feature),
 			_Utils_ap(
 				$author$project$Main$innerView(innerZone),
 				_Utils_ap(
