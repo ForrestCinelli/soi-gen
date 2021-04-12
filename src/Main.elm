@@ -52,7 +52,7 @@ showStar star = case star of
 
 type PlanetaryFeature
     = RockyPlanet TerrestrialPlanet
-    | GasGiant 
+    | GasGiant GiantPlanet
     | AsteroidBelt 
     | AsteroidCluster 
     | DustCloud 
@@ -65,7 +65,7 @@ type TerrestrialPlanet = TerrestrialPlanet PlanetBody PlanetGravity Atmosphere T
 type GiantPlanet = GiantPlanet GasBody GasGravity (List OrbitalFeature)
 
 type GasBody = Dwarf | Giant | Massive -- massive > giant
-type GasGravity = Weak | String | Powerful | Titanic
+type GasGravity = Weak | Strong | Powerful | Titanic
 
 type PlanetBody = LowMass | Small | SmallDense | Large | LargeDense | Vast
 type PlanetGravity = Low | Normal | High
@@ -78,12 +78,11 @@ type AtmosphereComposition = Deadly | Corrosive | Toxic | Tainted | Pure
 type StarshipGraveyardOrigin = CrushedFleet | FleetEngagement | LostExplorers | PlunderedConvoy | Skirmish | Unknown
 type DerelicitStationOrigin = EgarianVoidMaze | EldarOrrery | EldarGate | OrkRok | DefenseStation | MonitorStation | StryxisCollection | XenosDefenseStation | XenosMonitorStation
 
-tmpGiant = GiantPlanet Dwarf Weak []
 
 showPlanet: PlanetaryFeature -> String
 showPlanet p = case p of
     RockyPlanet deets -> "Planet"
-    GasGiant -> "Gas Giant"
+    GasGiant deets -> "Gas Giant"
     AsteroidBelt -> "Asteroid Belt"
     AsteroidCluster -> "Asteroid Cluster"
     DustCloud -> "Dust Cloud"
@@ -131,6 +130,19 @@ showAtmosphereComposition c = case c of
     Toxic -> "Toxic"
     Tainted -> "Tainted"
     Pure -> "Pure"
+
+showGasBody: GasBody -> String
+showGasBody b = case b of 
+    Dwarf -> "Gas dwarf"
+    Giant -> "Giant gas planet"
+    Massive -> "Massive gas giant"
+
+showGasGravity: GasGravity -> String
+showGasGravity g = case g of 
+    Weak -> "weak gravity"
+    Strong -> "strong gravity"
+    Powerful -> "powerful gravity"
+    Titanic -> "titanic gravity"
 
 showGraveyardOrigin: StarshipGraveyardOrigin -> String
 showGraveyardOrigin o = "Origin: " ++ (case o of
@@ -188,7 +200,7 @@ randomInner: Random.Generator PlanetaryFeature
 randomInner = (Random.int 21 100) |> Random.andThen (\roll -> 
         if roll <= 29      then Random.constant AsteroidCluster
         else if roll <= 41 then Random.constant DustCloud
-        else if roll <= 45 then randomGas -- todo consider increasing the probability of GLASS RAIN GAS GIANTS
+        else if roll <= 45 then Random.map (\gp -> GasGiant gp) (randomGas) -- todo consider increasing the probability of GLASS RAIN GAS GIANTS
         else if roll <= 56 then Random.constant GravityRiptide
         else if roll <= 76 then Random.map (\tp -> RockyPlanet tp) (randomRocky Inner)
         else if roll <= 89 then Random.constant RadiationBurst
@@ -213,7 +225,7 @@ randomOuter =  (Random.int 21 100) |> Random.andThen (\roll ->
         else if roll <= 40 then Random.constant AsteroidCluster
         else if roll <= 46 then Random.map (\o -> DerelictStation o) randomStationOrigin
         else if roll <= 55 then Random.constant DustCloud
-        else if roll <= 73 then randomGas
+        else if roll <= 73 then Random.map (\gp -> GasGiant gp) (randomGas)
         else if roll <= 80 then Random.constant GravityRiptide
         else if roll <= 93 then Random.map (\tp -> RockyPlanet tp) (randomRocky Outer)
         else                    Random.map (\o -> StarshipGraveyard o) randomGraveyardOrigin
@@ -306,8 +318,33 @@ randomTemperature zone atmosphere =
             else                    Ice
     ) (Random.int 1 10)
 
-randomGas: Random.Generator PlanetaryFeature--GiantPlanet
-randomGas = Random.constant GasGiant
+randomGas: Random.Generator GiantPlanet
+randomGas = randomGasBody |> Random.andThen (\body ->
+    randomGasGravity body |> Random.andThen (\gravity ->
+        Random.constant (GiantPlanet body gravity [])))
+
+randomGasBody: Random.Generator GasBody
+randomGasBody = Random.map (\roll -> 
+        if roll <= 2      then Dwarf 
+        else if roll <= 8 then Giant
+        else                   Massive -- todo 1d10 to decide if it's actually a brown dwarf or whatever
+    ) (Random.int 1 10)
+
+randomGasGravity: GasBody -> Random.Generator GasGravity
+randomGasGravity body = Random.map (\base ->
+        let 
+            adjustment = 
+                case body of
+                    Dwarf -> -5
+                    Giant -> 0
+                    Massive -> 3
+            roll = base + adjustment
+        in
+            if roll <= 2      then Weak
+            else if roll <= 6 then Strong
+            else if roll <= 9 then Powerful
+            else                   Titanic
+    ) (Random.int 1 10)
 
 randomGraveyardOrigin: Random.Generator StarshipGraveyardOrigin
 randomGraveyardOrigin = (Random.int 1 100) |> Random.andThen (\roll ->
@@ -401,9 +438,14 @@ planetView planet = case planet of
     RockyPlanet (TerrestrialPlanet body gravity atmosphere temperature orbitalFeatures) -> 
         div [] 
         [ text (showPlanet planet)
-        , p planetDetailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity))]
+        , p planetDetailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
         , p planetDetailStyle [ text ((showTemperature temperature) ++ " world") ]
         , p planetDetailStyle [ text (showAtmosphere atmosphere) ]
+        ]
+    GasGiant (GiantPlanet body gravity orbitalFeatures) ->
+        div []
+        [ text (showPlanet planet)
+        , p planetDetailStyle [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
         ]
     x -> text (showPlanet x)
 

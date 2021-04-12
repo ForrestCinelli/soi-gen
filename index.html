@@ -5704,15 +5704,69 @@ var $author$project$Main$randomHabitable = A2(
 			$author$project$Main$randomGraveyardOrigin))))));
 	},
 	A2($elm$random$Random$int, 21, 100));
+var $author$project$Main$GasGiant = function (a) {
+	return {$: 'GasGiant', a: a};
+};
 var $author$project$Main$Inner = {$: 'Inner'};
 var $author$project$Main$RadiationBurst = {$: 'RadiationBurst'};
 var $author$project$Main$SolarFlare = {$: 'SolarFlare'};
-var $author$project$Main$GasGiant = {$: 'GasGiant'};
-var $author$project$Main$randomGas = $elm$random$Random$constant($author$project$Main$GasGiant);
+var $author$project$Main$GiantPlanet = F3(
+	function (a, b, c) {
+		return {$: 'GiantPlanet', a: a, b: b, c: c};
+	});
+var $author$project$Main$Dwarf = {$: 'Dwarf'};
+var $author$project$Main$Giant = {$: 'Giant'};
+var $author$project$Main$Massive = {$: 'Massive'};
+var $author$project$Main$randomGasBody = A2(
+	$elm$random$Random$map,
+	function (roll) {
+		return (roll <= 2) ? $author$project$Main$Dwarf : ((roll <= 8) ? $author$project$Main$Giant : $author$project$Main$Massive);
+	},
+	A2($elm$random$Random$int, 1, 10));
+var $author$project$Main$Powerful = {$: 'Powerful'};
+var $author$project$Main$Strong = {$: 'Strong'};
+var $author$project$Main$Titanic = {$: 'Titanic'};
+var $author$project$Main$Weak = {$: 'Weak'};
+var $author$project$Main$randomGasGravity = function (body) {
+	return A2(
+		$elm$random$Random$map,
+		function (base) {
+			var adjustment = function () {
+				switch (body.$) {
+					case 'Dwarf':
+						return -5;
+					case 'Giant':
+						return 0;
+					default:
+						return 3;
+				}
+			}();
+			var roll = base + adjustment;
+			return (roll <= 2) ? $author$project$Main$Weak : ((roll <= 6) ? $author$project$Main$Strong : ((roll <= 9) ? $author$project$Main$Powerful : $author$project$Main$Titanic));
+		},
+		A2($elm$random$Random$int, 1, 10));
+};
+var $author$project$Main$randomGas = A2(
+	$elm$random$Random$andThen,
+	function (body) {
+		return A2(
+			$elm$random$Random$andThen,
+			function (gravity) {
+				return $elm$random$Random$constant(
+					A3($author$project$Main$GiantPlanet, body, gravity, _List_Nil));
+			},
+			$author$project$Main$randomGasGravity(body));
+	},
+	$author$project$Main$randomGasBody);
 var $author$project$Main$randomInner = A2(
 	$elm$random$Random$andThen,
 	function (roll) {
-		return (roll <= 29) ? $elm$random$Random$constant($author$project$Main$AsteroidCluster) : ((roll <= 41) ? $elm$random$Random$constant($author$project$Main$DustCloud) : ((roll <= 45) ? $author$project$Main$randomGas : ((roll <= 56) ? $elm$random$Random$constant($author$project$Main$GravityRiptide) : ((roll <= 76) ? A2(
+		return (roll <= 29) ? $elm$random$Random$constant($author$project$Main$AsteroidCluster) : ((roll <= 41) ? $elm$random$Random$constant($author$project$Main$DustCloud) : ((roll <= 45) ? A2(
+			$elm$random$Random$map,
+			function (gp) {
+				return $author$project$Main$GasGiant(gp);
+			},
+			$author$project$Main$randomGas) : ((roll <= 56) ? $elm$random$Random$constant($author$project$Main$GravityRiptide) : ((roll <= 76) ? A2(
 			$elm$random$Random$map,
 			function (tp) {
 				return $author$project$Main$RockyPlanet(tp);
@@ -5729,7 +5783,12 @@ var $author$project$Main$randomOuter = A2(
 			function (o) {
 				return $author$project$Main$DerelictStation(o);
 			},
-			$author$project$Main$randomStationOrigin) : ((roll <= 55) ? $elm$random$Random$constant($author$project$Main$DustCloud) : ((roll <= 73) ? $author$project$Main$randomGas : ((roll <= 80) ? $elm$random$Random$constant($author$project$Main$GravityRiptide) : ((roll <= 93) ? A2(
+			$author$project$Main$randomStationOrigin) : ((roll <= 55) ? $elm$random$Random$constant($author$project$Main$DustCloud) : ((roll <= 73) ? A2(
+			$elm$random$Random$map,
+			function (gp) {
+				return $author$project$Main$GasGiant(gp);
+			},
+			$author$project$Main$randomGas) : ((roll <= 80) ? $elm$random$Random$constant($author$project$Main$GravityRiptide) : ((roll <= 93) ? A2(
 			$elm$random$Random$map,
 			function (tp) {
 				return $author$project$Main$RockyPlanet(tp);
@@ -6019,6 +6078,28 @@ var $author$project$Main$showDerelictStationOrigin = function (o) {
 		}
 	}();
 };
+var $author$project$Main$showGasBody = function (b) {
+	switch (b.$) {
+		case 'Dwarf':
+			return 'Gas dwarf';
+		case 'Giant':
+			return 'Giant gas planet';
+		default:
+			return 'Massive gas giant';
+	}
+};
+var $author$project$Main$showGasGravity = function (g) {
+	switch (g.$) {
+		case 'Weak':
+			return 'weak gravity';
+		case 'Strong':
+			return 'strong gravity';
+		case 'Powerful':
+			return 'powerful gravity';
+		default:
+			return 'titanic gravity';
+	}
+};
 var $author$project$Main$showGraveyardOrigin = function (o) {
 	return 'Origin: ' + function () {
 		switch (o.$) {
@@ -6053,6 +6134,7 @@ var $author$project$Main$showPlanet = function (p) {
 			var deets = p.a;
 			return 'Planet';
 		case 'GasGiant':
+			var deets = p.a;
 			return 'Gas Giant';
 		case 'AsteroidBelt':
 			return 'Asteroid Belt';
@@ -6163,6 +6245,27 @@ var $author$project$Main$planetView = function (planet) {
 							[
 								$elm$html$Html$text(
 								$author$project$Main$showAtmosphere(atmosphere))
+							]))
+					]));
+		case 'GasGiant':
+			var _v2 = planet.a;
+			var body = _v2.a;
+			var gravity = _v2.b;
+			var orbitalFeatures = _v2.c;
+			return A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$showPlanet(planet)),
+						A2(
+						$elm$html$Html$p,
+						$author$project$Main$planetDetailStyle,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$Main$showGasBody(body) + (' with ' + $author$project$Main$showGasGravity(gravity)))
 							]))
 					]));
 		default:
