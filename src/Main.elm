@@ -394,13 +394,15 @@ starImg star = (case star of
     G -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowDwarf.jpg"
     F -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowWhiteDwarf.jpg"
     B -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/BlueGiant.gif"
-    ) :: (style "width" "100%") :: (style "height" "80%") :: []
+    ) :: (style "max-width" "20vw") :: (style "max-height" "20vh") :: []
 
 starStyle: List (Html.Attribute msg)
 starStyle = 
-    [ style "padding-top" "0.9%"
-    , style "padding-left" "0.9%"
-    , style "padding-right" "0.9%"
+    [ style "padding-top" "0.0%"
+    , style "padding-left" "0.0%"
+    , style "padding-right" "0.0%"
+--    , style "height" "20%"
+--    , style "width" "20%"
     , style "font-weight" "bold"
     ]
 
@@ -466,7 +468,8 @@ generateButton = div []
 
 buttonStyle: List (Html.Attribute msg)
 buttonStyle = 
-    [ style "width" "300px"
+    [ style "width" "15vw"
+    , style "height" "3vh"
     , style "margin-top" "10px"
     , style "font-size" "18px"
     , style "border" "none"
