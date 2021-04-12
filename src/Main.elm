@@ -1,8 +1,5 @@
 --todo:
     --star photos
-    --planet characteristics
-        --generator
-        --view
     --use probability distributions to handle the 01-20 case where a feature is "None"
     --orbital features
         --type 
@@ -21,7 +18,12 @@ import List exposing (head, length, tail, map)
 import Maybe
 import Random
 
-main = Browser.document { init = init, update = update, subscriptions = \_ -> Sub.none, view = \modl -> { title = "SOI Gen", body = view modl } }
+main = Browser.document 
+    { init = init
+    , update = update
+    , subscriptions = \_ -> Sub.none
+    , view = \modl -> { title = "SOI Gen", body = [ view modl ] }
+    }
 
 type alias Model = { star: Star, innerZone: List PlanetaryFeature, habitableZone: List PlanetaryFeature, outerZone: List PlanetaryFeature }
 
@@ -48,7 +50,6 @@ showStar star = case star of
     B -> "Blue Giant"
     VII -> "White Dwarf"
 
---RockyPlanet (List (Maybe OrbitalFeature)) | GasGiant (List (Maybe PlanetaryFeature)) | AsteroidBelt | AsteroidCluster
 type PlanetaryFeature
     = RockyPlanet TerrestrialPlanet
     | GasGiant 
@@ -383,8 +384,7 @@ outerView = map (\p -> div (planetStyle "LightSteelBlue") [ planetView p ])
 --i for names
 planetStyle: String -> List (Html.Attribute msg)
 planetStyle color = 
-    [ 
-    style "height" "200px"
+    [ style "height" "200px"
     , style "width" "200px"
     , style "margin" "auto"
     , style "background-color" color
