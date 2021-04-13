@@ -424,11 +424,11 @@ starView star feature = div starStyle
     ]
 
 starImg star = (case star of
-    VII -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/WhiteDwarf.jpg"
+    VII -> attribute "src" "https://soi-gen.herokuapp.com/WhiteDwarf.jpg"
     M -> attribute "src" "https://soi-gen.herokuapp.com/RedDwarf.jpg"
-    G -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowDwarf.jpg"
-    F -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowWhiteDwarf.jpg"
-    B -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/BlueGiant.gif"
+    G -> attribute "src" "https://soi-gen.herokuapp.com/YellowDwarf.jpg"
+    F -> attribute "src" "https://soi-gen.herokuapp.com/YellowWhiteDwarf.jpg"
+    B -> attribute "src" "https://soi-gen.herokuapp.com/BlueGiant.gif"
     ) :: 
     [ style "padding-top" "0.0%"
     , style "padding-left" "0.0%"
