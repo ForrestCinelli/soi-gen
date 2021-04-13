@@ -425,7 +425,7 @@ starView star feature = div starStyle
 
 starImg star = (case star of
     VII -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/WhiteDwarf.jpg"
-    M -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/RedDwarf.jpg"
+    M -> attribute "src" "https://soi-gen.herokuapp.com/RedDwarf.jpg"
     G -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowDwarf.jpg"
     F -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/YellowWhiteDwarf.jpg"
     B -> attribute "src" "file:///C:/Users/Forre/elm/soi-gen/BlueGiant.gif"
