@@ -450,6 +450,7 @@ planetContainerStyle =
     [ style "display" "flex"
     , style "align-items" "stretch"
     , style "width" "100%"
+    , style "margin" "0"
     ]
 
 innerView: List PlanetaryFeature -> List (Html Msg)
