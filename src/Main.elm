@@ -448,8 +448,8 @@ starStyle =
 planetContainerStyle: List (Html.Attribute msg)
 planetContainerStyle = 
     [ style "display" "flex"
+    , style "align-items" "stretch"
     , style "width" "100%"
-    , style "padding-top" "0.0%"
     ]
 
 innerView: List PlanetaryFeature -> List (Html Msg)
@@ -463,9 +463,8 @@ outerView = map (\p -> div (planetStyle "LightSteelBlue") [ planetView p ])
 --i for names
 planetStyle: String -> List (Html.Attribute msg)
 planetStyle color = 
-    [ style "height" "200px"
-    , style "width" "200px"
-    , style "margin" "auto"
+    [ style "width" "2000px" -- todo there has to be a better way to get them to just have no space in between
+    , style "margin" "0"
     , style "background-color" color
     , style "padding-top" "0.9%"
     , style "padding-left" "0.9%"
@@ -510,6 +509,7 @@ buttonStyle: List (Html.Attribute msg)
 buttonStyle = 
     [ style "width" "15vw"
     , style "height" "3vh"
+    , style "min-height" "28px"
     , style "margin-top" "10px"
     , style "font-size" "18px"
     , style "border" "none"

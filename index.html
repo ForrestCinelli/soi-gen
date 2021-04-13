@@ -5980,6 +5980,7 @@ var $author$project$Main$buttonStyle = _List_fromArray(
 	[
 		A2($elm$html$Html$Attributes$style, 'width', '15vw'),
 		A2($elm$html$Html$Attributes$style, 'height', '3vh'),
+		A2($elm$html$Html$Attributes$style, 'min-height', '28px'),
 		A2($elm$html$Html$Attributes$style, 'margin-top', '10px'),
 		A2($elm$html$Html$Attributes$style, 'font-size', '18px'),
 		A2($elm$html$Html$Attributes$style, 'border', 'none'),
@@ -6024,9 +6025,8 @@ var $author$project$Main$generateButton = A2(
 var $author$project$Main$planetStyle = function (color) {
 	return _List_fromArray(
 		[
-			A2($elm$html$Html$Attributes$style, 'height', '200px'),
-			A2($elm$html$Html$Attributes$style, 'width', '200px'),
-			A2($elm$html$Html$Attributes$style, 'margin', 'auto'),
+			A2($elm$html$Html$Attributes$style, 'width', '2000px'),
+			A2($elm$html$Html$Attributes$style, 'margin', '0'),
 			A2($elm$html$Html$Attributes$style, 'background-color', color),
 			A2($elm$html$Html$Attributes$style, 'padding-top', '0.9%'),
 			A2($elm$html$Html$Attributes$style, 'padding-left', '0.9%'),
@@ -6339,8 +6339,8 @@ var $author$project$Main$outerView = $elm$core$List$map(
 var $author$project$Main$planetContainerStyle = _List_fromArray(
 	[
 		A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-		A2($elm$html$Html$Attributes$style, 'width', '100%'),
-		A2($elm$html$Html$Attributes$style, 'padding-top', '0.0%')
+		A2($elm$html$Html$Attributes$style, 'align-items', 'stretch'),
+		A2($elm$html$Html$Attributes$style, 'width', '100%')
 	]);
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $author$project$Main$showStar = function (star) {
