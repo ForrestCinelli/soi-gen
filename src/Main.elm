@@ -449,6 +449,7 @@ planetContainerStyle: List (Html.Attribute msg)
 planetContainerStyle = 
     [ style "display" "flex"
     , style "width" "100%"
+    , style "padding-top" "0.0%"
     ]
 
 innerView: List PlanetaryFeature -> List (Html Msg)
