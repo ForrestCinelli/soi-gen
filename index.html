@@ -6398,21 +6398,19 @@ var $author$project$Main$starImg = function (star) {
 				case 'VII':
 					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/WhiteDwarf.jpg');
 				case 'M':
-					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/RedDwarf.jpg');
+					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/RedDwarf2.jpg');
 				case 'G':
 					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/YellowDwarf.jpg');
 				case 'F':
 					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/YellowWhiteDwarf.jpg');
 				default:
-					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/BlueGiant.gif');
+					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/BlueGiant2.jpg');
 			}
 		}(),
 		_List_fromArray(
 			[
-				A2($elm$html$Html$Attributes$style, 'padding-top', '0.0%'),
-				A2($elm$html$Html$Attributes$style, 'padding-left', '0.0%'),
-				A2($elm$html$Html$Attributes$style, 'padding-right', '0.0%'),
-				A2($elm$html$Html$Attributes$style, 'max-width', '20vw'),
+				A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px'),
+				A2($elm$html$Html$Attributes$style, 'max-width', '15vw'),
 				A2($elm$html$Html$Attributes$style, 'max-height', '20vh')
 			]));
 };
@@ -6428,14 +6426,25 @@ var $author$project$Main$starView = F2(
 			_List_fromArray(
 				[
 					A2(
-					$elm$html$Html$img,
-					$author$project$Main$starImg(star),
-					_List_Nil),
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'width', '15vw'),
+							A2($elm$html$Html$Attributes$style, 'background-color', 'black'),
+							A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							$author$project$Main$starImg(star),
+							_List_Nil)
+						])),
 					A2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							A2($elm$html$Html$Attributes$style, 'padding-left', '1vw')
+							A2($elm$html$Html$Attributes$style, 'text-align', 'center')
 						]),
 					_List_fromArray(
 						[
@@ -6446,7 +6455,7 @@ var $author$project$Main$starView = F2(
 					$elm$html$Html$div,
 					A2(
 						$elm$core$List$cons,
-						A2($elm$html$Html$Attributes$style, 'padding-left', '1vw'),
+						A2($elm$html$Html$Attributes$style, 'text-align', 'center'),
 						$author$project$Main$detailStyle),
 					_List_fromArray(
 						[

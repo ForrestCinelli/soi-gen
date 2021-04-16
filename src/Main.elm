@@ -418,22 +418,20 @@ system {star, feature, innerZone, habitableZone, outerZone} =
 
 starView: Star -> SystemFeature -> Html Msg
 starView star feature = div starStyle 
-    [ img (starImg star) []
-    , div [ style "padding-left" "1vw" ] [ text (showStar star) ]
-    , div ((style "padding-left" "1vw") :: detailStyle) [ text (showSystemFeature feature) ]
+    [ div [ style "width" "15vw", style "background-color" "black", style "padding" "0px 0px 0px 0px" ] [ img (starImg star) [] ]
+    , div [ style "text-align" "center" ] [ text (showStar star) ]
+    , div ((style "text-align" "center") :: detailStyle) [ text (showSystemFeature feature) ]
     ]
 
 starImg star = (case star of
     VII -> attribute "src" "https://soi-gen.herokuapp.com/WhiteDwarf.jpg"
-    M -> attribute "src" "https://soi-gen.herokuapp.com/RedDwarf.jpg"
+    M -> attribute "src" "https://soi-gen.herokuapp.com/RedDwarf2.jpg"
     G -> attribute "src" "https://soi-gen.herokuapp.com/YellowDwarf.jpg"
     F -> attribute "src" "https://soi-gen.herokuapp.com/YellowWhiteDwarf.jpg"
-    B -> attribute "src" "https://soi-gen.herokuapp.com/BlueGiant.gif"
+    B -> attribute "src" "https://soi-gen.herokuapp.com/BlueGiant2.jpg"
     ) :: 
-    [ style "padding-top" "0.0%"
-    , style "padding-left" "0.0%"
-    , style "padding-right" "0.0%"
-    , style "max-width" "20vw"
+    [ style "padding" "0px 0px 0px 0px"
+    , style "max-width" "15vw"
     , style "max-height" "20vh"
     ]
 
