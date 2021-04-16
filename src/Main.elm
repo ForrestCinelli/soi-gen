@@ -408,7 +408,6 @@ randomStationOrigin = (Random.int 1 100) |> Random.andThen (\roll ->
 view: Model -> Html Msg
 view model = div []
     [ system model
-    , generateButton
     ]
 
 system: Model -> Html Msg
@@ -418,9 +417,10 @@ system {star, feature, innerZone, habitableZone, outerZone} =
 
 starView: Star -> SystemFeature -> Html Msg
 starView star feature = div ((style "padding" "0px 0px 0px 0px") :: starStyle) 
-    [ div [ style "width" "15vw", style "background-color" "black", style "padding" "0px 0px 0px 0px", style "display" "flex", style "justify-content" "center" ] [ img (starImg star) [] ]
-    , div [ style "text-align" "center" ] [ text (showStar star) ]
-    , div ((style "text-align" "center") :: detailStyle) [ text (showSystemFeature feature) ]
+    [ div starContainerStyle [ img (starImg star) [] ]
+    , div [ style "text-align" "center", style "padding-top" "1vw", style "font-size" "24px" ] [ text (showStar star) ]
+    , div ((style "padding-bottom" "0.5vw") :: (style "text-align" "center") :: detailStyle) [ text (showSystemFeature feature) ]
+    , generateButton
     ]
 
 starImg star = (case star of
@@ -436,11 +436,14 @@ starImg star = (case star of
     ]
 
 starStyle: List (Html.Attribute msg)
-starStyle = 
-    [ 
---    , style "height" "20%"
---    , style "width" "20%"
-     style "font-weight" "bold"
+starStyle = [ style "font-weight" "bold" ]
+starContainerStyle: List(Html.Attribute msg)
+starContainerStyle = 
+    [ style "width" "15vw"
+    , style "background-color" "black"
+    , style "padding" "0px 0px 0px 0px"
+    , style "display" "flex"
+    , style "justify-content" "center"
     ]
 
 planetContainerStyle: List (Html.Attribute msg)
@@ -459,7 +462,7 @@ habitableView = map (\p -> div (planetStyle "#B0EEB0") [ planetView p ])
 
 outerView: List PlanetaryFeature -> List (Html Msg)
 outerView = map (\p -> div (planetStyle "LightSteelBlue") [ planetView p ])
---i for names
+--<i> for names
 planetStyle: String -> List (Html.Attribute msg)
 planetStyle color = 
     [ style "width" "2000px" -- todo there has to be a better way to get them to just have no space in between
@@ -468,7 +471,7 @@ planetStyle color =
     , style "padding-top" "0.9%"
     , style "padding-left" "0.9%"
     , style "font-weight" "bold"
-    , style "font-size" "medium"
+    , style "font-size" "large"
     ]
 
 planetView: PlanetaryFeature -> Html Msg
