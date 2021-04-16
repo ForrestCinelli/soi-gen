@@ -417,8 +417,8 @@ system {star, feature, innerZone, habitableZone, outerZone} =
         ((starView star feature) :: (innerView innerZone) ++ (habitableView habitableZone) ++ (outerView outerZone))
 
 starView: Star -> SystemFeature -> Html Msg
-starView star feature = div starStyle 
-    [ div [ style "width" "15vw", style "background-color" "black", style "padding" "0px 0px 0px 0px" ] [ img (starImg star) [] ]
+starView star feature = div ((style "padding" "0px 0px 0px 0px") :: starStyle) 
+    [ div [ style "width" "15vw", style "background-color" "black", style "padding" "0px 0px 0px 0px", style "display" "flex", style "justify-content" "center" ] [ img (starImg star) [] ]
     , div [ style "text-align" "center" ] [ text (showStar star) ]
     , div ((style "text-align" "center") :: detailStyle) [ text (showSystemFeature feature) ]
     ]

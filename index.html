@@ -6422,7 +6422,10 @@ var $author$project$Main$starView = F2(
 	function (star, feature) {
 		return A2(
 			$elm$html$Html$div,
-			$author$project$Main$starStyle,
+			A2(
+				$elm$core$List$cons,
+				A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px'),
+				$author$project$Main$starStyle),
 			_List_fromArray(
 				[
 					A2(
@@ -6431,7 +6434,9 @@ var $author$project$Main$starView = F2(
 						[
 							A2($elm$html$Html$Attributes$style, 'width', '15vw'),
 							A2($elm$html$Html$Attributes$style, 'background-color', 'black'),
-							A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px')
+							A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px'),
+							A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+							A2($elm$html$Html$Attributes$style, 'justify-content', 'center')
 						]),
 					_List_fromArray(
 						[
