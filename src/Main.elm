@@ -42,9 +42,9 @@ maximum s t = case (s, t) of
 maxFinder: Maybe (List Star) -> Star -> Star -> Maybe Star
 maxFinder maybeStars s t = case maybeStars of
     Just (cstar :: starList) ->
-        if (s == cstar || t == cstar) then (Just cstar)
-        else if (s == t) then Just s 
-        else maxFinder (tail starList) s t
+        if (s == cstar || t == cstar) then Just cstar
+        else if (s == t)              then Just s
+        else                               maxFinder (tail starList) s t
     Just [] -> Nothing
     Nothing -> Nothing
 
@@ -445,7 +445,7 @@ system {star, feature, innerZone, habitableZone, outerZone} =
 starView: Star -> SystemFeature -> Html Msg
 starView star feature = div ((style "padding" "0px 0px 0px 0px") :: starStyle) 
     [ div starContainerStyle [ img (starImg star) [] ]
-    , div [ style "text-align" "center", style "padding-top" "1vw", style "font-size" "24px" ] [ text (showStar star) ]
+    , div [ style "text-align" "center", style "padding" "1vw 0.1vw 0vw 0.1vw", style "font-size" "24px" ] [ text (showStar star) ]
     , div ((style "padding-bottom" "0.5vw") :: (style "text-align" "center") :: detailStyle) [ text (showSystemFeature feature) ]
     , generateButton
     ]
