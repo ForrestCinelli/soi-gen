@@ -5846,13 +5846,17 @@ var $author$project$Main$maxFinder = F3(
 					if (_Utils_eq(s, cstar) || _Utils_eq(t, cstar)) {
 						return $elm$core$Maybe$Just(cstar);
 					} else {
-						var $temp$maybeStars = $elm$core$List$tail(starList),
-							$temp$s = s,
-							$temp$t = t;
-						maybeStars = $temp$maybeStars;
-						s = $temp$s;
-						t = $temp$t;
-						continue maxFinder;
+						if (_Utils_eq(s, t)) {
+							return $elm$core$Maybe$Just(s);
+						} else {
+							var $temp$maybeStars = $elm$core$List$tail(starList),
+								$temp$s = s,
+								$temp$t = t;
+							maybeStars = $temp$maybeStars;
+							s = $temp$s;
+							t = $temp$t;
+							continue maxFinder;
+						}
 					}
 				} else {
 					return $elm$core$Maybe$Nothing;

@@ -42,7 +42,9 @@ maximum s t = case (s, t) of
 maxFinder: Maybe (List Star) -> Star -> Star -> Maybe Star
 maxFinder maybeStars s t = case maybeStars of
     Just (cstar :: starList) ->
-        if (s == cstar || t == cstar) then (Just cstar) else maxFinder (tail starList) s t
+        if (s == cstar || t == cstar) then (Just cstar)
+        else if (s == t) then Just s 
+        else maxFinder (tail starList) s t
     Just [] -> Nothing
     Nothing -> Nothing
 
