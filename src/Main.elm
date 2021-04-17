@@ -461,7 +461,7 @@ habitableView: List PlanetaryFeature -> List (Html Msg)
 habitableView = map (\p -> div (planetStyle "#B0EEB0") [ planetView p ])
 
 outerView: List PlanetaryFeature -> List (Html Msg)
-outerView = map (\p -> div (planetStyle "LightSteelBlue") [ planetView p ])
+outerView = map (\p -> div (planetStyle "#B0B0EE") [ planetView p ])
 --<i> for names
 planetStyle: String -> List (Html.Attribute msg)
 planetStyle color = 
