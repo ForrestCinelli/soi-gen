@@ -5816,18 +5816,114 @@ var $author$project$Main$randomOuter = A2(
 			$author$project$Main$randomGraveyardOrigin)))))));
 	},
 	A2($elm$random$Random$int, 21, 100));
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (maybeValue.$ === 'Just') {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$List$tail = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(xs);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$Main$maxFinder = F3(
+	function (maybeStars, s, t) {
+		maxFinder:
+		while (true) {
+			if (maybeStars.$ === 'Just') {
+				if (maybeStars.a.b) {
+					var _v1 = maybeStars.a;
+					var cstar = _v1.a;
+					var starList = _v1.b;
+					if (_Utils_eq(s, cstar) || _Utils_eq(t, cstar)) {
+						return $elm$core$Maybe$Just(cstar);
+					} else {
+						var $temp$maybeStars = $elm$core$List$tail(starList),
+							$temp$s = s,
+							$temp$t = t;
+						maybeStars = $temp$maybeStars;
+						s = $temp$s;
+						t = $temp$t;
+						continue maxFinder;
+					}
+				} else {
+					return $elm$core$Maybe$Nothing;
+				}
+			} else {
+				return $elm$core$Maybe$Nothing;
+			}
+		}
+	});
+var $author$project$Main$B = {$: 'B'};
+var $author$project$Main$F = {$: 'F'};
+var $author$project$Main$G = {$: 'G'};
+var $author$project$Main$VII = {$: 'VII'};
+var $author$project$Main$stars = _List_fromArray(
+	[$author$project$Main$B, $author$project$Main$F, $author$project$Main$G, $author$project$Main$M, $author$project$Main$VII]);
+var $author$project$Main$maximum = F2(
+	function (s, t) {
+		var _v0 = _Utils_Tuple2(s, t);
+		if (_v0.a.$ === 'Binary') {
+			var _v1 = _v0.a;
+			var ss = _v1.a;
+			var st = _v1.b;
+			return A2(
+				$elm$core$Maybe$andThen,
+				$author$project$Main$maximum(t),
+				A2($author$project$Main$maximum, ss, st));
+		} else {
+			if (_v0.b.$ === 'Binary') {
+				var _v2 = _v0.b;
+				var ts = _v2.a;
+				var tt = _v2.b;
+				return A2(
+					$elm$core$Maybe$andThen,
+					$author$project$Main$maximum(s),
+					A2($author$project$Main$maximum, ts, tt));
+			} else {
+				return A3(
+					$author$project$Main$maxFinder,
+					$elm$core$Maybe$Just($author$project$Main$stars),
+					s,
+					t);
+			}
+		}
+	});
 var $author$project$Main$regionSizes = function (star) {
-	switch (star.$) {
-		case 'VII':
-			return {habitable: 1, inner: 0, outer: 5};
-		case 'M':
-			return {habitable: 3, inner: 3, outer: 5};
-		case 'G':
-			return {habitable: 5, inner: 1, outer: 3};
-		case 'F':
-			return {habitable: 3, inner: 3, outer: 3};
-		default:
-			return {habitable: 1, inner: 5, outer: 3};
+	regionSizes:
+	while (true) {
+		switch (star.$) {
+			case 'Binary':
+				var s = star.a;
+				var t = star.b;
+				var _v1 = A2($author$project$Main$maximum, s, t);
+				if (_v1.$ === 'Just') {
+					var m = _v1.a;
+					var $temp$star = m;
+					star = $temp$star;
+					continue regionSizes;
+				} else {
+					return {habitable: 0, inner: 0, outer: 3};
+				}
+			case 'VII':
+				return {habitable: 1, inner: 0, outer: 5};
+			case 'M':
+				return {habitable: 3, inner: 3, outer: 5};
+			case 'G':
+				return {habitable: 5, inner: 1, outer: 3};
+			case 'F':
+				return {habitable: 3, inner: 3, outer: 3};
+			default:
+				return {habitable: 1, inner: 5, outer: 3};
+		}
 	}
 };
 var $author$project$Main$planetsForStar = F2(
@@ -5854,9 +5950,27 @@ var $author$project$Main$planetsForStar = F2(
 				$author$project$Main$regionSizes(star).outer,
 				$author$project$Main$randomOuter));
 	});
-var $author$project$Main$B = {$: 'B'};
-var $author$project$Main$F = {$: 'F'};
-var $author$project$Main$G = {$: 'G'};
+var $author$project$Main$Binary = F2(
+	function (a, b) {
+		return {$: 'Binary', a: a, b: b};
+	});
+var $elm$random$Random$map2 = F3(
+	function (func, _v0, _v1) {
+		var genA = _v0.a;
+		var genB = _v1.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v2 = genA(seed0);
+				var a = _v2.a;
+				var seed1 = _v2.b;
+				var _v3 = genB(seed1);
+				var b = _v3.a;
+				var seed2 = _v3.b;
+				return _Utils_Tuple2(
+					A2(func, a, b),
+					seed2);
+			});
+	});
 var $elm$random$Random$addOne = function (value) {
 	return _Utils_Tuple2(1, value);
 };
@@ -5930,11 +6044,25 @@ var $elm$random$Random$uniform = F2(
 			$elm$random$Random$addOne(value),
 			A2($elm$core$List$map, $elm$random$Random$addOne, valueList));
 	});
-var $author$project$Main$randomStar = A2(
+var $author$project$Main$randomNonbinaryStar = A2(
 	$elm$random$Random$uniform,
 	$author$project$Main$M,
 	_List_fromArray(
-		[$author$project$Main$G, $author$project$Main$F, $author$project$Main$B]));
+		[$author$project$Main$G, $author$project$Main$F, $author$project$Main$B, $author$project$Main$VII]));
+var $author$project$Main$randomStar = A2(
+	$elm$random$Random$andThen,
+	function (roll) {
+		return (roll <= 1) ? $elm$random$Random$constant($author$project$Main$B) : ((roll <= 4) ? $elm$random$Random$constant($author$project$Main$F) : ((roll <= 7) ? $elm$random$Random$constant($author$project$Main$G) : ((roll <= 8) ? $elm$random$Random$constant($author$project$Main$M) : ((roll <= 9) ? $elm$random$Random$constant($author$project$Main$VII) : A3(
+			$elm$random$Random$map2,
+			function (s) {
+				return function (t) {
+					return A2($author$project$Main$Binary, s, t);
+				};
+			},
+			$author$project$Main$randomNonbinaryStar,
+			$author$project$Main$randomNonbinaryStar)))));
+	},
+	A2($elm$random$Random$int, 1, 10));
 var $author$project$Main$Bountiful = {$: 'Bountiful'};
 var $author$project$Main$GravityTides = {$: 'GravityTides'};
 var $author$project$Main$Haven = {$: 'Haven'};
@@ -6354,8 +6482,12 @@ var $author$project$Main$showStar = function (star) {
 			return 'Yellow-White Star';
 		case 'B':
 			return 'Blue Giant';
-		default:
+		case 'VII':
 			return 'White Dwarf';
+		default:
+			var s = star.a;
+			var t = star.b;
+			return $author$project$Main$showStar(s) + (' / ' + ($author$project$Main$showStar(t) + ' pair'));
 	}
 };
 var $author$project$Main$showSystemFeature = function (sf) {
@@ -6403,6 +6535,8 @@ var $author$project$Main$starImg = function (star) {
 		$elm$core$List$cons,
 		function () {
 			switch (star.$) {
+				case 'Binary':
+					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/Binary.jpg');
 				case 'VII':
 					return A2($elm$html$Html$Attributes$attribute, 'src', 'https://soi-gen.herokuapp.com/WhiteDwarf.jpg');
 				case 'M':

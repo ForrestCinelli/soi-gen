@@ -1,5 +1,5 @@
 --todo:
-    --star photos
+    --correct star probabilities
     --use probability distributions to handle the 01-20 case where a feature is "None"
     --orbital features
         --type 
@@ -30,8 +30,21 @@ type alias Model = { star: Star, feature: SystemFeature, innerZone: List Planeta
 
 ----
 
-type Star = M | G | F | B | VII
-stars = [M, G, F, B, VII]
+type Star = M | G | F | B | VII | Binary Star Star
+stars = [B, F, G, M, VII]
+
+maximum: Star -> Star -> Maybe Star
+maximum s t = case (s, t) of 
+    ((Binary ss st), _) -> Maybe.andThen (maximum t) (maximum ss st)
+    (_, (Binary ts tt)) -> Maybe.andThen (maximum s) (maximum ts tt)
+    (_, _) -> maxFinder (Just stars) s t
+
+maxFinder: Maybe (List Star) -> Star -> Star -> Maybe Star
+maxFinder maybeStars s t = case maybeStars of
+    Just (cstar :: starList) ->
+        if (s == cstar || t == cstar) then (Just cstar) else maxFinder (tail starList) s t
+    Just [] -> Nothing
+    Nothing -> Nothing
 
 type SystemFeature = Bountiful | GravityTides | Haven | IllOmened | PirateDen | RuinedEmpire | Starfarers | StellarAnomaly | WarpStasis | WarpTurbulence
 
@@ -39,6 +52,9 @@ type Zone = Inner | Habitable | Outer
 
 regionSizes: Star -> { inner: Int, habitable: Int, outer: Int }
 regionSizes star = case star of 
+    Binary s t -> case (maximum s t) of 
+        Just m -> regionSizes m
+        Nothing -> { inner = 0, habitable = 0, outer = 3 } -- todo this is for debugging
     VII -> { inner = 0, habitable = 1, outer = 5 }
     M -> { inner = 3, habitable = 3, outer = 5 }
     G -> { inner = 1, habitable = 5, outer = 3 }
@@ -52,6 +68,7 @@ showStar star = case star of
     F -> "Yellow-White Star"
     B -> "Blue Giant"
     VII -> "White Dwarf"
+    Binary s t -> (showStar s) ++ " / " ++  (showStar t) ++ " pair"
 
 type PlanetaryFeature
     = RockyPlanet TerrestrialPlanet
@@ -205,14 +222,22 @@ randomModel = Random.Extra.andThen2 planetsForStar
                                     randomSystemFeature
                                     randomStar
 
---randomStar |> (\star -> Random.andThen randomSystemFeature |> Random.andThen (planetsForStar star))
-
 randomStar: Random.Generator Star
-randomStar = Random.uniform M [ G, F, B, VII ]
+randomStar = (Random.int 1 10) |> Random.andThen (\roll ->
+    if roll <= 1      then Random.constant B
+    else if roll <= 4 then Random.constant F
+    else if roll <= 7 then Random.constant G
+    else if roll <= 8 then Random.constant M
+    else if roll <= 9 then Random.constant VII
+    else                   Random.map2 (\s -> \t -> Binary s t) randomNonbinaryStar randomNonbinaryStar -- todo book says they should match 7/10 times
+    )
+
+randomNonbinaryStar: Random.Generator Star
+randomNonbinaryStar = Random.uniform M [ G, F, B, VII ]
 
 randomSystemFeature: Random.Generator SystemFeature
 randomSystemFeature = Random.map (\roll ->
-    if roll <= 1 then      Bountiful
+    if roll <= 1      then Bountiful
     else if roll <= 2 then GravityTides
     else if roll <= 3 then Haven
     else if roll <= 4 then IllOmened
@@ -424,6 +449,7 @@ starView star feature = div ((style "padding" "0px 0px 0px 0px") :: starStyle)
     ]
 
 starImg star = (case star of
+    Binary _ _ -> attribute "src" "https://soi-gen.herokuapp.com/Binary.jpg"
     VII -> attribute "src" "https://soi-gen.herokuapp.com/WhiteDwarf.jpg"
     M -> attribute "src" "https://soi-gen.herokuapp.com/RedDwarf2.jpg"
     G -> attribute "src" "https://soi-gen.herokuapp.com/YellowDwarf.jpg"
