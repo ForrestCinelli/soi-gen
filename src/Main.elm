@@ -208,7 +208,7 @@ randomModel = Random.Extra.andThen2 planetsForStar
 --randomStar |> (\star -> Random.andThen randomSystemFeature |> Random.andThen (planetsForStar star))
 
 randomStar: Random.Generator Star
-randomStar = Random.uniform M [ G, F, B ]
+randomStar = Random.uniform M [ G, F, B, VII ]
 
 randomSystemFeature: Random.Generator SystemFeature
 randomSystemFeature = Random.map (\roll ->
