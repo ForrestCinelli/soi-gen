@@ -497,6 +497,7 @@ planetContainerStyle =
       style "display" "grid"
     , style "gap" "0px 0px"
     , style "grid-template-columns" "15vw" -- rest auto
+    , style "grid-template-rows" "fit-content(0%) 1fr"
     , style "width" "100%"
     , style "margin" "0"
     ]
@@ -527,27 +528,27 @@ planetView: Zone -> PlanetaryFeature -> (Html Msg, Html Msg)
 planetView zone planet = case planet of
     DerelictStation o ->
         ( p (headerStyle zone) [ text (showPlanet planet) ]
-        , p (planetDetailStyle zone) [ text (showDerelictStationOrigin o) ]
+        , p ((planetDetailStyle zone) ++ detailStyle) [ text (showDerelictStationOrigin o) ]
         )
     StarshipGraveyard o -> 
         ( p (headerStyle zone) [ text (showPlanet planet) ]
-        , p (planetDetailStyle zone) [ text (showGraveyardOrigin o) ]
+        , p ((planetDetailStyle zone) ++ detailStyle) [ text (showGraveyardOrigin o) ]
         )
     RockyPlanet (TerrestrialPlanet body gravity atmosphere temperature orbitalFeatures) -> 
         ( p (headerStyle zone) [ text (showPlanet planet) ]
-        , div (planetDetailStyle zone)
-            [ p [] [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
-            , p [] [ text ((showTemperature temperature) ++ " world") ]
-            , p [] [ text (showAtmosphere atmosphere) ]
+        , div ((planetDetailStyle zone))
+            [ p ((planetDetailStyle zone) ++ detailStyle) [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
+            , p ((planetDetailStyle zone) ++ detailStyle) [ text ((showTemperature temperature) ++ " world") ]
+            , p ((planetDetailStyle zone) ++ detailStyle) [ text (showAtmosphere atmosphere) ]
             ]
         )
     GasGiant (GiantPlanet body gravity orbitalFeatures) ->
         ( p (headerStyle zone) [ text (showPlanet planet) ]
-        , p (planetDetailStyle zone) [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
+        , p ((planetDetailStyle zone) ++ detailStyle) [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
         )
     x -> 
         ( p (headerStyle zone) [ text (showPlanet x) ]
-        , div (planetDetailStyle zone) []
+        , div ((planetDetailStyle zone) ++ detailStyle) []
         )
 
 row x = style "grid-row-start" (String.fromInt x)
@@ -572,14 +573,14 @@ planetDetailStyle z =
         Outer -> "LightSteelBlue"
         )
     , row 2
-    ] ++ detailStyle
+    ]
 
 headerStyle: Zone -> List(Html.Attribute msg)
 headerStyle z = 
     [ style "background-color" (case z of
-        Inner -> "#EEB0B0"
-        Habitable -> "#B0EEB0"
-        Outer -> "LightSteelBlue"
+        Inner -> "#DE8686"
+        Habitable -> "#86DE86"
+        Outer -> "#819DC0"
         )
     , style "font-weight" "bold"
     , style "font-size" "large"
