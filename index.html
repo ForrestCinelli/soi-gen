@@ -5825,46 +5825,22 @@ var $elm$core$Maybe$andThen = F2(
 			return $elm$core$Maybe$Nothing;
 		}
 	});
-var $elm$core$List$tail = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(xs);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
 var $author$project$Main$maxFinder = F3(
-	function (maybeStars, s, t) {
-		maxFinder:
-		while (true) {
-			if (maybeStars.$ === 'Just') {
-				if (maybeStars.a.b) {
-					var _v1 = maybeStars.a;
-					var cstar = _v1.a;
-					var starList = _v1.b;
-					if (_Utils_eq(s, cstar) || _Utils_eq(t, cstar)) {
-						return $elm$core$Maybe$Just(cstar);
+	function (starss, s, t) {
+		return A3(
+			$elm$core$List$foldl,
+			function (star) {
+				return function (maybe) {
+					if (maybe.$ === 'Just') {
+						var x = maybe.a;
+						return $elm$core$Maybe$Just(x);
 					} else {
-						if (_Utils_eq(s, t)) {
-							return $elm$core$Maybe$Just(s);
-						} else {
-							var $temp$maybeStars = $elm$core$List$tail(starList),
-								$temp$s = s,
-								$temp$t = t;
-							maybeStars = $temp$maybeStars;
-							s = $temp$s;
-							t = $temp$t;
-							continue maxFinder;
-						}
+						return (_Utils_eq(star, s) || _Utils_eq(star, t)) ? $elm$core$Maybe$Just(star) : $elm$core$Maybe$Nothing;
 					}
-				} else {
-					return $elm$core$Maybe$Nothing;
-				}
-			} else {
-				return $elm$core$Maybe$Nothing;
-			}
-		}
+				};
+			},
+			$elm$core$Maybe$Nothing,
+			starss);
 	});
 var $author$project$Main$B = {$: 'B'};
 var $author$project$Main$F = {$: 'F'};
@@ -5893,11 +5869,7 @@ var $author$project$Main$maximum = F2(
 					$author$project$Main$maximum(s),
 					A2($author$project$Main$maximum, ts, tt));
 			} else {
-				return A3(
-					$author$project$Main$maxFinder,
-					$elm$core$Maybe$Just($author$project$Main$stars),
-					s,
-					t);
+				return A3($author$project$Main$maxFinder, $author$project$Main$stars, s, t);
 			}
 		}
 	});

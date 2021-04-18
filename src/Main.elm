@@ -1,5 +1,5 @@
 --todo:
-    --correct star probabilities
+    --generates when you press g
     --use probability distributions to handle the 01-20 case where a feature is "None"
     --orbital features
         --type 
@@ -37,16 +37,22 @@ maximum: Star -> Star -> Maybe Star
 maximum s t = case (s, t) of 
     ((Binary ss st), _) -> Maybe.andThen (maximum t) (maximum ss st)
     (_, (Binary ts tt)) -> Maybe.andThen (maximum s) (maximum ts tt)
-    (_, _) -> maxFinder (Just stars) s t
+    (_, _) -> maxFinder stars s t
 
-maxFinder: Maybe (List Star) -> Star -> Star -> Maybe Star
-maxFinder maybeStars s t = case maybeStars of
-    Just (cstar :: starList) ->
-        if (s == cstar || t == cstar) then Just cstar
-        else if (s == t)              then Just s
-        else                               maxFinder (tail starList) s t
-    Just [] -> Nothing
-    Nothing -> Nothing
+--maxFinder: Maybe (List Star) -> Star -> Star -> Maybe Star
+--maxFinder maybeStars s t = case maybeStars of
+--    Just (cstar :: starList) ->
+--        if (s == cstar || t == cstar) then Just cstar
+--        else if (s == t)              then Just s
+--        else                               maxFinder (tail starList) s t
+--    Just [] -> Nothing
+--    Nothing -> Nothing
+
+maxFinder starss s t = List.foldl (
+    \star -> \maybe -> case maybe of 
+      Just x -> Just x
+      Nothing -> if (star == s || star == t) then (Just star) else Nothing
+  ) Nothing starss
 
 type SystemFeature = Bountiful | GravityTides | Haven | IllOmened | PirateDen | RuinedEmpire | Starfarers | StellarAnomaly | WarpStasis | WarpTurbulence
 
