@@ -14,10 +14,11 @@ import Browser
 import Html exposing (Html, button, div, img, text, p)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (style, attribute)
-import List exposing (head, length, tail, map)
+import List exposing (head, length, tail, map, concatMap)
 import Maybe
 import Random
 import Random.Extra
+import Tuple exposing (first, second)
 
 main = Browser.document 
     { init = init
@@ -449,7 +450,7 @@ system {star, feature, innerZone, habitableZone, outerZone} =
         ((starView star feature) :: (innerView innerZone) ++ (habitableView habitableZone) ++ (outerView outerZone))
 
 starView: Star -> SystemFeature -> Html Msg
-starView star feature = div ((style "padding" "0px 0px 0px 0px") :: starStyle) 
+starView star feature = div starStyle 
     [ div starContainerStyle [ img (starImg star) [] ]
     , div [ style "text-align" "center", style "padding" "1vw 0.1vw 0vw 0.1vw", style "font-size" "24px" ] [ text (showStar star) ]
     , div ((style "padding-bottom" "0.5vw") :: (style "text-align" "center") :: detailStyle) [ text (showSystemFeature feature) ]
@@ -467,10 +468,19 @@ starImg star = (case star of
     [ style "padding" "0px 0px 0px 0px"
     , style "max-width" "15vw"
     , style "max-height" "20vh"
+    , style "margin" "0"
     ]
 
 starStyle: List (Html.Attribute msg)
-starStyle = [ style "font-weight" "bold" ]
+starStyle = 
+    [ style "font-weight" "bold"
+    , style "grid-row-start" "1"
+    , style "grid-column-start" "1"
+    , style "grid-row-end" "3"
+    , style "padding" "0px 0px 0px 0px"
+    , style "margin" "0"
+    , style "width" "15vw"
+    ]
 starContainerStyle: List(Html.Attribute msg)
 starContainerStyle = 
     [ style "width" "15vw"
@@ -482,56 +492,95 @@ starContainerStyle =
 
 planetContainerStyle: List (Html.Attribute msg)
 planetContainerStyle = 
-    [ style "display" "flex"
-    , style "align-items" "stretch"
+    [ --style "display" "flex"
+    --, style "align-items" "stretch"
+      style "display" "grid"
+    , style "gap" "0px 0px"
+    , style "grid-template-columns" "15vw" -- rest auto
     , style "width" "100%"
     , style "margin" "0"
     ]
 
 innerView: List PlanetaryFeature -> List (Html Msg)
-innerView = map (\p -> div (planetStyle "#EEB0B0") [ planetView p ])
+innerView = concatMap (
+        \p -> 
+            let pv = planetView "#EEB0B0" p 
+            in [ first pv, second pv ]
+    )
 
 habitableView: List PlanetaryFeature -> List (Html Msg)
-habitableView = map (\p -> div (planetStyle "#B0EEB0") [ planetView p ])
+habitableView = concatMap (
+        \p -> 
+            let pv = planetView "#B0EEB0" p 
+            in [ first pv, second pv ]
+    )
 
 outerView: List PlanetaryFeature -> List (Html Msg)
-outerView = map (\p -> div (planetStyle "#B0B0EE") [ planetView p ])
+outerView = concatMap (
+        \p -> 
+            let pv = planetView "#B0B0EE" p 
+            in [ first pv, second pv ]
+    )
 --<i> for names
 planetStyle: String -> List (Html.Attribute msg)
 planetStyle color = 
-    [ style "width" "2000px" -- todo there has to be a better way to get them to just have no space in between
-    , style "margin" "0"
-    , style "background-color" color
-    , style "padding-top" "0.9%"
-    , style "padding-left" "0.9%"
-    , style "font-weight" "bold"
-    , style "font-size" "large"
+    [ --style "width" "2000px" -- todo there has to be a better way to get them to just have no space in between
+
+     style "background-color" color
     ]
 
-planetView: PlanetaryFeature -> Html Msg
-planetView planet = case planet of
-    DerelictStation o -> div [] [ text (showPlanet planet), p detailStyle [ text (showDerelictStationOrigin o) ] ]
-    StarshipGraveyard o -> div [] [ text (showPlanet planet), p detailStyle [ text (showGraveyardOrigin o) ] ]
+planetView: String -> PlanetaryFeature -> (Html Msg, Html Msg)
+planetView color planet = case planet of
+    DerelictStation o ->
+        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
+        , p ((style "background-color" color) :: detailStyle) [ text (showDerelictStationOrigin o) ]
+        )
+    StarshipGraveyard o -> 
+        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
+        , p ((style "background-color" color) :: detailStyle) [ text (showGraveyardOrigin o) ]
+        )
     RockyPlanet (TerrestrialPlanet body gravity atmosphere temperature orbitalFeatures) -> 
-        div [] 
-        [ text (showPlanet planet)
-        , p detailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
-        , p detailStyle [ text ((showTemperature temperature) ++ " world") ]
-        , p detailStyle [ text (showAtmosphere atmosphere) ]
-        ]
+        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
+        , div [ row 2, style "background-color" color ] 
+            [ p detailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
+            , p detailStyle [ text ((showTemperature temperature) ++ " world") ]
+            , p detailStyle [ text (showAtmosphere atmosphere) ]
+            ]
+        )
     GasGiant (GiantPlanet body gravity orbitalFeatures) ->
-        div []
-        [ text (showPlanet planet)
-        , p detailStyle [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
-        ]
-    x -> text (showPlanet x)
+        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
+        , p ((style "background-color" color) :: detailStyle) [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
+        )
+    x -> 
+        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet x) ]
+        , div [ row 2, style "background-color" color ] []
+        )
 
+row x = style "grid-row-start" (String.fromInt x)
 
 detailStyle: List (Html.Attribute msg)
 detailStyle = 
     [ style "font-weight" "normal"
     , style "font-style" "italic"
+    , style "margin" "0"
     , style "font-size" "small"
+    , style "padding-top" "5%"
+    , style "padding-left" "5%"
+    , style "padding-right" "5%"
+    , style "padding-bottom" "5%"
+    , row 2
+    ]
+
+headerStyle: List(Html.Attribute msg)
+headerStyle = 
+    [ style "font-weight" "bold"
+    , style "font-size" "large"
+    , row 1
+    , style "margin" "0"
+    , style "padding-top" "5%"
+    , style "padding-left" "5%"
+    , style "padding-right" "5%"
+    , style "padding-bottom" "5%"
     ]
 
 --

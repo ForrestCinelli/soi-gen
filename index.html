@@ -6076,25 +6076,52 @@ var $author$project$Main$update = F2(
 		}
 	});
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
+var $elm$core$List$concatMap = F2(
+	function (f, list) {
+		return $elm$core$List$concat(
+			A2($elm$core$List$map, f, list));
+	});
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$Main$planetStyle = function (color) {
-	return _List_fromArray(
-		[
-			A2($elm$html$Html$Attributes$style, 'width', '2000px'),
-			A2($elm$html$Html$Attributes$style, 'margin', '0'),
-			A2($elm$html$Html$Attributes$style, 'background-color', color),
-			A2($elm$html$Html$Attributes$style, 'padding-top', '0.9%'),
-			A2($elm$html$Html$Attributes$style, 'padding-left', '0.9%'),
-			A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
-			A2($elm$html$Html$Attributes$style, 'font-size', 'large')
-		]);
+var $author$project$Main$row = function (x) {
+	return A2(
+		$elm$html$Html$Attributes$style,
+		'grid-row-start',
+		$elm$core$String$fromInt(x));
 };
 var $author$project$Main$detailStyle = _List_fromArray(
 	[
 		A2($elm$html$Html$Attributes$style, 'font-weight', 'normal'),
 		A2($elm$html$Html$Attributes$style, 'font-style', 'italic'),
-		A2($elm$html$Html$Attributes$style, 'font-size', 'small')
+		A2($elm$html$Html$Attributes$style, 'margin', '0'),
+		A2($elm$html$Html$Attributes$style, 'font-size', 'small'),
+		A2($elm$html$Html$Attributes$style, 'padding-top', '5%'),
+		A2($elm$html$Html$Attributes$style, 'padding-left', '5%'),
+		A2($elm$html$Html$Attributes$style, 'padding-right', '5%'),
+		A2($elm$html$Html$Attributes$style, 'padding-bottom', '5%'),
+		$author$project$Main$row(2)
+	]);
+var $author$project$Main$headerStyle = _List_fromArray(
+	[
+		A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
+		A2($elm$html$Html$Attributes$style, 'font-size', 'large'),
+		$author$project$Main$row(1),
+		A2($elm$html$Html$Attributes$style, 'margin', '0'),
+		A2($elm$html$Html$Attributes$style, 'padding-top', '5%'),
+		A2($elm$html$Html$Attributes$style, 'padding-left', '5%'),
+		A2($elm$html$Html$Attributes$style, 'padding-right', '5%'),
+		A2($elm$html$Html$Attributes$style, 'padding-bottom', '5%')
 	]);
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$showAtmosphereComposition = function (c) {
@@ -6260,144 +6287,191 @@ var $author$project$Main$showTemperature = function (t) {
 };
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$planetView = function (planet) {
-	switch (planet.$) {
-		case 'DerelictStation':
-			var o = planet.a;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$author$project$Main$showPlanet(planet)),
-						A2(
+var $author$project$Main$planetView = F2(
+	function (color, planet) {
+		switch (planet.$) {
+			case 'DerelictStation':
+				var o = planet.a;
+				return _Utils_Tuple2(
+					A2(
 						$elm$html$Html$p,
-						$author$project$Main$detailStyle,
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$headerStyle),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$Main$showPlanet(planet))
+							])),
+					A2(
+						$elm$html$Html$p,
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$detailStyle),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
 								$author$project$Main$showDerelictStationOrigin(o))
-							]))
-					]));
-		case 'StarshipGraveyard':
-			var o = planet.a;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$author$project$Main$showPlanet(planet)),
-						A2(
+							])));
+			case 'StarshipGraveyard':
+				var o = planet.a;
+				return _Utils_Tuple2(
+					A2(
 						$elm$html$Html$p,
-						$author$project$Main$detailStyle,
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$headerStyle),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$Main$showPlanet(planet))
+							])),
+					A2(
+						$elm$html$Html$p,
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$detailStyle),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
 								$author$project$Main$showGraveyardOrigin(o))
-							]))
-					]));
-		case 'RockyPlanet':
-			var _v1 = planet.a;
-			var body = _v1.a;
-			var gravity = _v1.b;
-			var atmosphere = _v1.c;
-			var temperature = _v1.d;
-			var orbitalFeatures = _v1.e;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$author$project$Main$showPlanet(planet)),
-						A2(
+							])));
+			case 'RockyPlanet':
+				var _v1 = planet.a;
+				var body = _v1.a;
+				var gravity = _v1.b;
+				var atmosphere = _v1.c;
+				var temperature = _v1.d;
+				var orbitalFeatures = _v1.e;
+				return _Utils_Tuple2(
+					A2(
 						$elm$html$Html$p,
-						$author$project$Main$detailStyle,
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$headerStyle),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showBody(body) + (' with ' + $author$project$Main$showGravity(gravity)))
+								$author$project$Main$showPlanet(planet))
 							])),
-						A2(
+					A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$author$project$Main$row(2),
+								A2($elm$html$Html$Attributes$style, 'background-color', color)
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$p,
+								$author$project$Main$detailStyle,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$author$project$Main$showBody(body) + (' with ' + $author$project$Main$showGravity(gravity)))
+									])),
+								A2(
+								$elm$html$Html$p,
+								$author$project$Main$detailStyle,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$author$project$Main$showTemperature(temperature) + ' world')
+									])),
+								A2(
+								$elm$html$Html$p,
+								$author$project$Main$detailStyle,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$author$project$Main$showAtmosphere(atmosphere))
+									]))
+							])));
+			case 'GasGiant':
+				var _v2 = planet.a;
+				var body = _v2.a;
+				var gravity = _v2.b;
+				var orbitalFeatures = _v2.c;
+				return _Utils_Tuple2(
+					A2(
 						$elm$html$Html$p,
-						$author$project$Main$detailStyle,
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$headerStyle),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showTemperature(temperature) + ' world')
+								$author$project$Main$showPlanet(planet))
 							])),
-						A2(
+					A2(
 						$elm$html$Html$p,
-						$author$project$Main$detailStyle,
-						_List_fromArray(
-							[
-								$elm$html$Html$text(
-								$author$project$Main$showAtmosphere(atmosphere))
-							]))
-					]));
-		case 'GasGiant':
-			var _v2 = planet.a;
-			var body = _v2.a;
-			var gravity = _v2.b;
-			var orbitalFeatures = _v2.c;
-			return A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$author$project$Main$showPlanet(planet)),
 						A2(
-						$elm$html$Html$p,
-						$author$project$Main$detailStyle,
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$detailStyle),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
 								$author$project$Main$showGasBody(body) + (' with ' + $author$project$Main$showGasGravity(gravity)))
-							]))
-					]));
-		default:
-			var x = planet;
-			return $elm$html$Html$text(
-				$author$project$Main$showPlanet(x));
-	}
+							])));
+			default:
+				var x = planet;
+				return _Utils_Tuple2(
+					A2(
+						$elm$html$Html$p,
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'background-color', color),
+							$author$project$Main$headerStyle),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$Main$showPlanet(x))
+							])),
+					A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$author$project$Main$row(2),
+								A2($elm$html$Html$Attributes$style, 'background-color', color)
+							]),
+						_List_Nil));
+		}
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
 };
-var $author$project$Main$habitableView = $elm$core$List$map(
+var $author$project$Main$habitableView = $elm$core$List$concatMap(
 	function (p) {
-		return A2(
-			$elm$html$Html$div,
-			$author$project$Main$planetStyle('#B0EEB0'),
-			_List_fromArray(
-				[
-					$author$project$Main$planetView(p)
-				]));
+		var pv = A2($author$project$Main$planetView, '#B0EEB0', p);
+		return _List_fromArray(
+			[pv.a, pv.b]);
 	});
-var $author$project$Main$innerView = $elm$core$List$map(
+var $author$project$Main$innerView = $elm$core$List$concatMap(
 	function (p) {
-		return A2(
-			$elm$html$Html$div,
-			$author$project$Main$planetStyle('#EEB0B0'),
-			_List_fromArray(
-				[
-					$author$project$Main$planetView(p)
-				]));
+		var pv = A2($author$project$Main$planetView, '#EEB0B0', p);
+		return _List_fromArray(
+			[pv.a, pv.b]);
 	});
-var $author$project$Main$outerView = $elm$core$List$map(
+var $author$project$Main$outerView = $elm$core$List$concatMap(
 	function (p) {
-		return A2(
-			$elm$html$Html$div,
-			$author$project$Main$planetStyle('#B0B0EE'),
-			_List_fromArray(
-				[
-					$author$project$Main$planetView(p)
-				]));
+		var pv = A2($author$project$Main$planetView, '#B0B0EE', p);
+		return _List_fromArray(
+			[pv.a, pv.b]);
 	});
 var $author$project$Main$planetContainerStyle = _List_fromArray(
 	[
-		A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-		A2($elm$html$Html$Attributes$style, 'align-items', 'stretch'),
+		A2($elm$html$Html$Attributes$style, 'display', 'grid'),
+		A2($elm$html$Html$Attributes$style, 'gap', '0px 0px'),
+		A2($elm$html$Html$Attributes$style, 'grid-template-columns', '15vw'),
 		A2($elm$html$Html$Attributes$style, 'width', '100%'),
 		A2($elm$html$Html$Attributes$style, 'margin', '0')
 	]);
@@ -6529,21 +6603,25 @@ var $author$project$Main$starImg = function (star) {
 			[
 				A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px'),
 				A2($elm$html$Html$Attributes$style, 'max-width', '15vw'),
-				A2($elm$html$Html$Attributes$style, 'max-height', '20vh')
+				A2($elm$html$Html$Attributes$style, 'max-height', '20vh'),
+				A2($elm$html$Html$Attributes$style, 'margin', '0')
 			]));
 };
 var $author$project$Main$starStyle = _List_fromArray(
 	[
-		A2($elm$html$Html$Attributes$style, 'font-weight', 'bold')
+		A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
+		A2($elm$html$Html$Attributes$style, 'grid-row-start', '1'),
+		A2($elm$html$Html$Attributes$style, 'grid-column-start', '1'),
+		A2($elm$html$Html$Attributes$style, 'grid-row-end', '3'),
+		A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px'),
+		A2($elm$html$Html$Attributes$style, 'margin', '0'),
+		A2($elm$html$Html$Attributes$style, 'width', '15vw')
 	]);
 var $author$project$Main$starView = F2(
 	function (star, feature) {
 		return A2(
 			$elm$html$Html$div,
-			A2(
-				$elm$core$List$cons,
-				A2($elm$html$Html$Attributes$style, 'padding', '0px 0px 0px 0px'),
-				$author$project$Main$starStyle),
+			$author$project$Main$starStyle,
 			_List_fromArray(
 				[
 					A2(
