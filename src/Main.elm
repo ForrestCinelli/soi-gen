@@ -504,56 +504,50 @@ planetContainerStyle =
 innerView: List PlanetaryFeature -> List (Html Msg)
 innerView = concatMap (
         \p -> 
-            let pv = planetView "#EEB0B0" p 
+            let pv = planetView Inner p 
             in [ first pv, second pv ]
     )
 
 habitableView: List PlanetaryFeature -> List (Html Msg)
 habitableView = concatMap (
         \p -> 
-            let pv = planetView "#B0EEB0" p 
+            let pv = planetView Habitable p 
             in [ first pv, second pv ]
     )
 
 outerView: List PlanetaryFeature -> List (Html Msg)
 outerView = concatMap (
         \p -> 
-            let pv = planetView "#B0B0EE" p 
+            let pv = planetView Outer p 
             in [ first pv, second pv ]
     )
 --<i> for names
-planetStyle: String -> List (Html.Attribute msg)
-planetStyle color = 
-    [ --style "width" "2000px" -- todo there has to be a better way to get them to just have no space in between
 
-     style "background-color" color
-    ]
-
-planetView: String -> PlanetaryFeature -> (Html Msg, Html Msg)
-planetView color planet = case planet of
+planetView: Zone -> PlanetaryFeature -> (Html Msg, Html Msg)
+planetView zone planet = case planet of
     DerelictStation o ->
-        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
-        , p ((style "background-color" color) :: detailStyle) [ text (showDerelictStationOrigin o) ]
+        ( p (headerStyle zone) [ text (showPlanet planet) ]
+        , p (planetDetailStyle zone) [ text (showDerelictStationOrigin o) ]
         )
     StarshipGraveyard o -> 
-        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
-        , p ((style "background-color" color) :: detailStyle) [ text (showGraveyardOrigin o) ]
+        ( p (headerStyle zone) [ text (showPlanet planet) ]
+        , p (planetDetailStyle zone) [ text (showGraveyardOrigin o) ]
         )
     RockyPlanet (TerrestrialPlanet body gravity atmosphere temperature orbitalFeatures) -> 
-        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
-        , div [ row 2, style "background-color" color ] 
-            [ p detailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
-            , p detailStyle [ text ((showTemperature temperature) ++ " world") ]
-            , p detailStyle [ text (showAtmosphere atmosphere) ]
+        ( p (headerStyle zone) [ text (showPlanet planet) ]
+        , div (planetDetailStyle zone)
+            [ p [] [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
+            , p [] [ text ((showTemperature temperature) ++ " world") ]
+            , p [] [ text (showAtmosphere atmosphere) ]
             ]
         )
     GasGiant (GiantPlanet body gravity orbitalFeatures) ->
-        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet planet) ]
-        , p ((style "background-color" color) :: detailStyle) [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
+        ( p (headerStyle zone) [ text (showPlanet planet) ]
+        , p (planetDetailStyle zone) [ text ((showGasBody body) ++ " with " ++ (showGasGravity gravity)) ]
         )
     x -> 
-        ( p ((style "background-color" color) :: headerStyle) [ text (showPlanet x) ]
-        , div [ row 2, style "background-color" color ] []
+        ( p (headerStyle zone) [ text (showPlanet x) ]
+        , div (planetDetailStyle zone) []
         )
 
 row x = style "grid-row-start" (String.fromInt x)
@@ -568,12 +562,26 @@ detailStyle =
     , style "padding-left" "5%"
     , style "padding-right" "5%"
     , style "padding-bottom" "5%"
-    , row 2
     ]
 
-headerStyle: List(Html.Attribute msg)
-headerStyle = 
-    [ style "font-weight" "bold"
+planetDetailStyle: Zone -> List (Html.Attribute msg)
+planetDetailStyle z = 
+    [ style "background-color" (case z of
+        Inner -> "#EEB0B0"
+        Habitable -> "#B0EEB0"
+        Outer -> "LightSteelBlue"
+        )
+    , row 2
+    ] ++ detailStyle
+
+headerStyle: Zone -> List(Html.Attribute msg)
+headerStyle z = 
+    [ style "background-color" (case z of
+        Inner -> "#EEB0B0"
+        Habitable -> "#B0EEB0"
+        Outer -> "LightSteelBlue"
+        )
+    , style "font-weight" "bold"
     , style "font-size" "large"
     , row 1
     , style "margin" "0"

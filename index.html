@@ -6100,6 +6100,33 @@ var $author$project$Main$row = function (x) {
 		'grid-row-start',
 		$elm$core$String$fromInt(x));
 };
+var $author$project$Main$headerStyle = function (z) {
+	return _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$Attributes$style,
+			'background-color',
+			function () {
+				switch (z.$) {
+					case 'Inner':
+						return '#EEB0B0';
+					case 'Habitable':
+						return '#B0EEB0';
+					default:
+						return 'LightSteelBlue';
+				}
+			}()),
+			A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
+			A2($elm$html$Html$Attributes$style, 'font-size', 'large'),
+			$author$project$Main$row(1),
+			A2($elm$html$Html$Attributes$style, 'margin', '0'),
+			A2($elm$html$Html$Attributes$style, 'padding-top', '5%'),
+			A2($elm$html$Html$Attributes$style, 'padding-left', '5%'),
+			A2($elm$html$Html$Attributes$style, 'padding-right', '5%'),
+			A2($elm$html$Html$Attributes$style, 'padding-bottom', '5%')
+		]);
+};
+var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$detailStyle = _List_fromArray(
 	[
 		A2($elm$html$Html$Attributes$style, 'font-weight', 'normal'),
@@ -6109,21 +6136,29 @@ var $author$project$Main$detailStyle = _List_fromArray(
 		A2($elm$html$Html$Attributes$style, 'padding-top', '5%'),
 		A2($elm$html$Html$Attributes$style, 'padding-left', '5%'),
 		A2($elm$html$Html$Attributes$style, 'padding-right', '5%'),
-		A2($elm$html$Html$Attributes$style, 'padding-bottom', '5%'),
-		$author$project$Main$row(2)
-	]);
-var $author$project$Main$headerStyle = _List_fromArray(
-	[
-		A2($elm$html$Html$Attributes$style, 'font-weight', 'bold'),
-		A2($elm$html$Html$Attributes$style, 'font-size', 'large'),
-		$author$project$Main$row(1),
-		A2($elm$html$Html$Attributes$style, 'margin', '0'),
-		A2($elm$html$Html$Attributes$style, 'padding-top', '5%'),
-		A2($elm$html$Html$Attributes$style, 'padding-left', '5%'),
-		A2($elm$html$Html$Attributes$style, 'padding-right', '5%'),
 		A2($elm$html$Html$Attributes$style, 'padding-bottom', '5%')
 	]);
-var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$Main$planetDetailStyle = function (z) {
+	return _Utils_ap(
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$Attributes$style,
+				'background-color',
+				function () {
+					switch (z.$) {
+						case 'Inner':
+							return '#EEB0B0';
+						case 'Habitable':
+							return '#B0EEB0';
+						default:
+							return 'LightSteelBlue';
+					}
+				}()),
+				$author$project$Main$row(2)
+			]),
+		$author$project$Main$detailStyle);
+};
 var $author$project$Main$showAtmosphereComposition = function (c) {
 	switch (c.$) {
 		case 'Deadly':
@@ -6288,17 +6323,14 @@ var $author$project$Main$showTemperature = function (t) {
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$planetView = F2(
-	function (color, planet) {
+	function (zone, planet) {
 		switch (planet.$) {
 			case 'DerelictStation':
 				var o = planet.a;
 				return _Utils_Tuple2(
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$headerStyle),
+						$author$project$Main$headerStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6306,10 +6338,7 @@ var $author$project$Main$planetView = F2(
 							])),
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$detailStyle),
+						$author$project$Main$planetDetailStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6320,10 +6349,7 @@ var $author$project$Main$planetView = F2(
 				return _Utils_Tuple2(
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$headerStyle),
+						$author$project$Main$headerStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6331,10 +6357,7 @@ var $author$project$Main$planetView = F2(
 							])),
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$detailStyle),
+						$author$project$Main$planetDetailStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6350,10 +6373,7 @@ var $author$project$Main$planetView = F2(
 				return _Utils_Tuple2(
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$headerStyle),
+						$author$project$Main$headerStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6361,16 +6381,12 @@ var $author$project$Main$planetView = F2(
 							])),
 					A2(
 						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$author$project$Main$row(2),
-								A2($elm$html$Html$Attributes$style, 'background-color', color)
-							]),
+						$author$project$Main$planetDetailStyle(zone),
 						_List_fromArray(
 							[
 								A2(
 								$elm$html$Html$p,
-								$author$project$Main$detailStyle,
+								_List_Nil,
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
@@ -6378,7 +6394,7 @@ var $author$project$Main$planetView = F2(
 									])),
 								A2(
 								$elm$html$Html$p,
-								$author$project$Main$detailStyle,
+								_List_Nil,
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
@@ -6386,7 +6402,7 @@ var $author$project$Main$planetView = F2(
 									])),
 								A2(
 								$elm$html$Html$p,
-								$author$project$Main$detailStyle,
+								_List_Nil,
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
@@ -6401,10 +6417,7 @@ var $author$project$Main$planetView = F2(
 				return _Utils_Tuple2(
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$headerStyle),
+						$author$project$Main$headerStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6412,10 +6425,7 @@ var $author$project$Main$planetView = F2(
 							])),
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$detailStyle),
+						$author$project$Main$planetDetailStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6426,10 +6436,7 @@ var $author$project$Main$planetView = F2(
 				return _Utils_Tuple2(
 					A2(
 						$elm$html$Html$p,
-						A2(
-							$elm$core$List$cons,
-							A2($elm$html$Html$Attributes$style, 'background-color', color),
-							$author$project$Main$headerStyle),
+						$author$project$Main$headerStyle(zone),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
@@ -6437,11 +6444,7 @@ var $author$project$Main$planetView = F2(
 							])),
 					A2(
 						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$author$project$Main$row(2),
-								A2($elm$html$Html$Attributes$style, 'background-color', color)
-							]),
+						$author$project$Main$planetDetailStyle(zone),
 						_List_Nil));
 		}
 	});
@@ -6451,19 +6454,19 @@ var $elm$core$Tuple$second = function (_v0) {
 };
 var $author$project$Main$habitableView = $elm$core$List$concatMap(
 	function (p) {
-		var pv = A2($author$project$Main$planetView, '#B0EEB0', p);
+		var pv = A2($author$project$Main$planetView, $author$project$Main$Habitable, p);
 		return _List_fromArray(
 			[pv.a, pv.b]);
 	});
 var $author$project$Main$innerView = $elm$core$List$concatMap(
 	function (p) {
-		var pv = A2($author$project$Main$planetView, '#EEB0B0', p);
+		var pv = A2($author$project$Main$planetView, $author$project$Main$Inner, p);
 		return _List_fromArray(
 			[pv.a, pv.b]);
 	});
 var $author$project$Main$outerView = $elm$core$List$concatMap(
 	function (p) {
-		var pv = A2($author$project$Main$planetView, '#B0B0EE', p);
+		var pv = A2($author$project$Main$planetView, $author$project$Main$Outer, p);
 		return _List_fromArray(
 			[pv.a, pv.b]);
 	});
