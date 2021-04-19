@@ -7,14 +7,16 @@
         --view
     --names
     --make planets and features match book rprecisely
+    --box which shows the random seed, and if you enter a custom one it uses that one. 
 
 module Main exposing (..)
 
 import Browser
 import Html exposing (Html, button, div, img, text, p)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, on, keyCode)
 import Html.Attributes exposing (style, attribute)
 import List exposing (head, length, tail, map, concatMap)
+import Json.Decode as D
 import Maybe
 import Random
 import Random.Extra
@@ -216,7 +218,7 @@ init _ = ({ star = M, feature = IllOmened, innerZone = [], habitableZone = [], o
 
 ----
 
-type Msg = Generate | NewSystem Model
+type Msg = Generate | NewSystem Model | Keydown Int
 
 update: Msg -> Model -> (Model, Cmd Msg)
 update msg model = case msg of 
@@ -225,6 +227,7 @@ update msg model = case msg of
         ( model
         , Random.generate NewSystem randomModel
         )
+    Keydown key -> if (key == 13 || key == 71) then (update Generate model) else (model, Cmd.none)
 
 randomModel: Random.Generator Model
 randomModel = Random.Extra.andThen2 planetsForStar
@@ -440,9 +443,12 @@ randomStationOrigin = (Random.int 1 100) |> Random.andThen (\roll ->
 ----
 
 view: Model -> Html Msg
-view model = div []
+view model = div [ onKeydown ]
     [ system model
     ]
+
+onKeydown: Html.Attribute Msg
+onKeydown = on "keydown" (D.map Keydown keyCode) 
 
 system: Model -> Html Msg
 system {star, feature, innerZone, habitableZone, outerZone} =
@@ -537,9 +543,9 @@ planetView zone planet = case planet of
     RockyPlanet (TerrestrialPlanet body gravity atmosphere temperature orbitalFeatures) -> 
         ( p (headerStyle zone) [ text (showPlanet planet) ]
         , div ((planetDetailStyle zone))
-            [ p ((planetDetailStyle zone) ++ detailStyle) [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
-            , p ((planetDetailStyle zone) ++ detailStyle) [ text ((showTemperature temperature) ++ " world") ]
-            , p ((planetDetailStyle zone) ++ detailStyle) [ text (showAtmosphere atmosphere) ]
+            [ p detailStyle [ text ((showBody body) ++ " with " ++ (showGravity gravity)) ]
+            , p detailStyle [ text ((showTemperature temperature) ++ " world") ]
+            , p detailStyle [ text (showAtmosphere atmosphere) ]
             ]
         )
     GasGiant (GiantPlanet body gravity orbitalFeatures) ->
