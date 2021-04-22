@@ -8,6 +8,8 @@
     --names
     --make planets and features match book rprecisely
     --box which shows the random seed, and if you enter a custom one it uses that one. 
+    --pic can get squished horizontally instead of sizing down
+    --g and enter don't work on mac. 
 
 module Main exposing (..)
 
@@ -58,6 +60,7 @@ maxFinder starss s t = List.foldl (
   ) Nothing starss
 
 type SystemFeature = Bountiful | GravityTides | Haven | IllOmened | PirateDen | RuinedEmpire | Starfarers | StellarAnomaly | WarpStasis | WarpTurbulence
+systemFeatures = [Bountiful, GravityTides, Haven, IllOmened, PirateDen, RuinedEmpire, Starfarers, StellarAnomaly, WarpStasis, WarpTurbulence]
 
 type Zone = Inner | Habitable | Outer
 
@@ -84,30 +87,82 @@ showStar star = case star of
 type PlanetaryFeature
     = RockyPlanet TerrestrialPlanet
     | GasGiant GiantPlanet
-    | AsteroidBelt 
-    | AsteroidCluster 
-    | DustCloud 
-    | GravityRiptide 
-    | RadiationBurst 
-    | SolarFlare 
-    | DerelictStation DerelicitStationOrigin 
+    | AsteroidBelt
+    | AsteroidCluster
+    | DustCloud
+    | GravityRiptide
+    | RadiationBurst
+    | SolarFlare
+    | DerelictStation DerelicitStationOrigin
     | StarshipGraveyard StarshipGraveyardOrigin
+type PlanetaryFeatureChoice
+    = RockyFeature
+    | GasFeature
+    | AsteroidBeltFeature
+    | AsteroidClusterFeature
+    | DustCloudFeature
+    | GravityRiptideFeature
+    | RadiationBurstFeature
+    | SolarFlareFeature
+    | DerelictStationFeature
+    | StarshipGraveyardFeature
+planetaryFeatureChoices = 
+    [ RockyFeature
+    , GasFeature
+    , AsteroidBeltFeature
+    , AsteroidClusterFeature
+    , DustCloudFeature
+    , GravityRiptideFeature
+    , RadiationBurstFeature
+    , SolarFlareFeature
+    , DerelictStationFeature
+    , StarshipGraveyardFeature
+    ]
 type TerrestrialPlanet = TerrestrialPlanet PlanetBody PlanetGravity Atmosphere Temperature (List OrbitalFeature)
 type GiantPlanet = GiantPlanet GasBody GasGravity (List OrbitalFeature)
 
 type GasBody = Dwarf | Giant | Massive -- massive > giant
+gasBodies = [Dwarf, Giant, Massive]
 type GasGravity = Weak | Strong | Powerful | Titanic
+gasGravities = [Weak, Strong, Powerful, Titanic]
 
 type PlanetBody = LowMass | Small | SmallDense | Large | LargeDense | Vast
+planetBodies = [LowMass, Small, SmallDense, Large, LargeDense, Vast]
 type PlanetGravity = Low | Normal | High
+planetGravities = [Low, Normal, High]
 
 type Temperature = Burning | Hot | Temperate | Cold | Ice
+temperatures = [Burning, Hot, Temperate, Cold, Ice]
 
 type Atmosphere = None | Thin AtmosphereComposition | Moderate AtmosphereComposition | Heavy AtmosphereComposition
+type AtmosphereChoice = NoAtm | ThinAtm | ModerateAtm | HeavyAtm
+atmosphereChoices = [NoAtm, ThinAtm, ModerateAtm, HeavyAtm]
 type AtmosphereComposition = Deadly | Corrosive | Toxic | Tainted | Pure
+atmosphereCompositions = [Deadly, Corrosive, Toxic, Tainted, Pure]
 
 type StarshipGraveyardOrigin = CrushedFleet | FleetEngagement | LostExplorers | PlunderedConvoy | Skirmish | Unknown
-type DerelicitStationOrigin = EgarianVoidMaze | EldarOrrery | EldarGate | OrkRok | DefenseStation | MonitorStation | StryxisCollection | XenosDefenseStation | XenosMonitorStation
+starshipGraveyardOrigins = [CrushedFleet, FleetEngagement, LostExplorers, PlunderedConvoy, Skirmish, Unknown]
+type DerelicitStationOrigin
+    = EgarianVoidMaze
+    | EldarOrrery 
+    | EldarGate 
+    | OrkRok 
+    | DefenseStation 
+    | MonitorStation 
+    | StryxisCollection 
+    | XenosDefenseStation 
+    | XenosMonitorStation
+derelicitStationOrigins = 
+    [ EgarianVoidMaze
+    , EldarOrrery 
+    , EldarGate 
+    , OrkRok 
+    , DefenseStation 
+    , MonitorStation 
+    , StryxisCollection 
+    , XenosDefenseStation 
+    , XenosMonitorStation
+    ]
 
 
 showSystemFeature: SystemFeature -> String
