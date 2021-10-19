@@ -5435,18 +5435,18 @@ var $elm$random$Random$map3 = F4(
 					seed3);
 			});
 	});
-var $author$project$Main$AsteroidBelt = {$: 'AsteroidBelt'};
-var $author$project$Main$AsteroidCluster = {$: 'AsteroidCluster'};
-var $author$project$Main$DerelictStation = function (a) {
+var $author$project$PlanetaryFeature$AsteroidBelt = {$: 'AsteroidBelt'};
+var $author$project$PlanetaryFeature$AsteroidCluster = {$: 'AsteroidCluster'};
+var $author$project$PlanetaryFeature$DerelictStation = function (a) {
 	return {$: 'DerelictStation', a: a};
 };
-var $author$project$Main$DustCloud = {$: 'DustCloud'};
-var $author$project$Main$GravityRiptide = {$: 'GravityRiptide'};
-var $author$project$Main$Habitable = {$: 'Habitable'};
-var $author$project$Main$RockyPlanet = function (a) {
+var $author$project$PlanetaryFeature$DustCloud = {$: 'DustCloud'};
+var $author$project$PlanetaryFeature$GravityRiptide = {$: 'GravityRiptide'};
+var $author$project$BasicTypes$Habitable = {$: 'Habitable'};
+var $author$project$PlanetaryFeature$RockyPlanet = function (a) {
 	return {$: 'RockyPlanet', a: a};
 };
-var $author$project$Main$StarshipGraveyard = function (a) {
+var $author$project$PlanetaryFeature$StarshipGraveyard = function (a) {
 	return {$: 'StarshipGraveyard', a: a};
 };
 var $elm$random$Random$constant = function (value) {
@@ -5497,44 +5497,44 @@ var $elm$random$Random$int = F2(
 				}
 			});
 	});
-var $author$project$Main$CrushedFleet = {$: 'CrushedFleet'};
-var $author$project$Main$FleetEngagement = {$: 'FleetEngagement'};
-var $author$project$Main$LostExplorers = {$: 'LostExplorers'};
-var $author$project$Main$PlunderedConvoy = {$: 'PlunderedConvoy'};
-var $author$project$Main$Skirmish = {$: 'Skirmish'};
-var $author$project$Main$Unknown = {$: 'Unknown'};
-var $author$project$Main$randomGraveyardOrigin = A2(
+var $author$project$PlanetaryFeature$CrushedFleet = {$: 'CrushedFleet'};
+var $author$project$PlanetaryFeature$FleetEngagement = {$: 'FleetEngagement'};
+var $author$project$PlanetaryFeature$LostExplorers = {$: 'LostExplorers'};
+var $author$project$PlanetaryFeature$PlunderedConvoy = {$: 'PlunderedConvoy'};
+var $author$project$PlanetaryFeature$Skirmish = {$: 'Skirmish'};
+var $author$project$PlanetaryFeature$Unknown = {$: 'Unknown'};
+var $author$project$PlanetaryFeature$randomGraveyardOrigin = A2(
 	$elm$random$Random$andThen,
 	function (roll) {
-		return (roll <= 15) ? $elm$random$Random$constant($author$project$Main$CrushedFleet) : ((roll <= 20) ? $elm$random$Random$constant($author$project$Main$FleetEngagement) : ((roll <= 35) ? $elm$random$Random$constant($author$project$Main$LostExplorers) : ((roll <= 65) ? $elm$random$Random$constant($author$project$Main$PlunderedConvoy) : ((roll <= 90) ? $elm$random$Random$constant($author$project$Main$Skirmish) : $elm$random$Random$constant($author$project$Main$Unknown)))));
+		return (roll <= 15) ? $elm$random$Random$constant($author$project$PlanetaryFeature$CrushedFleet) : ((roll <= 20) ? $elm$random$Random$constant($author$project$PlanetaryFeature$FleetEngagement) : ((roll <= 35) ? $elm$random$Random$constant($author$project$PlanetaryFeature$LostExplorers) : ((roll <= 65) ? $elm$random$Random$constant($author$project$PlanetaryFeature$PlunderedConvoy) : ((roll <= 90) ? $elm$random$Random$constant($author$project$PlanetaryFeature$Skirmish) : $elm$random$Random$constant($author$project$PlanetaryFeature$Unknown)))));
 	},
 	A2($elm$random$Random$int, 1, 100));
-var $author$project$Main$TerrestrialPlanet = F5(
+var $author$project$PlanetaryFeature$TerrestrialPlanet = F5(
 	function (a, b, c, d, e) {
 		return {$: 'TerrestrialPlanet', a: a, b: b, c: c, d: d, e: e};
 	});
-var $author$project$Main$Heavy = function (a) {
+var $author$project$PlanetaryFeature$Heavy = function (a) {
 	return {$: 'Heavy', a: a};
 };
-var $author$project$Main$Moderate = function (a) {
+var $author$project$PlanetaryFeature$Moderate = function (a) {
 	return {$: 'Moderate', a: a};
 };
-var $author$project$Main$None = {$: 'None'};
-var $author$project$Main$Thin = function (a) {
+var $author$project$PlanetaryFeature$None = {$: 'None'};
+var $author$project$PlanetaryFeature$Thin = function (a) {
 	return {$: 'Thin', a: a};
 };
-var $author$project$Main$Corrosive = {$: 'Corrosive'};
-var $author$project$Main$Deadly = {$: 'Deadly'};
-var $author$project$Main$Pure = {$: 'Pure'};
-var $author$project$Main$Tainted = {$: 'Tainted'};
-var $author$project$Main$Toxic = {$: 'Toxic'};
-var $author$project$Main$randomAtmosphericComposition = A2(
+var $author$project$PlanetaryFeature$Corrosive = {$: 'Corrosive'};
+var $author$project$PlanetaryFeature$Deadly = {$: 'Deadly'};
+var $author$project$PlanetaryFeature$Pure = {$: 'Pure'};
+var $author$project$PlanetaryFeature$Tainted = {$: 'Tainted'};
+var $author$project$PlanetaryFeature$Toxic = {$: 'Toxic'};
+var $author$project$PlanetaryFeature$randomAtmosphericComposition = A2(
 	$elm$random$Random$map,
 	function (roll) {
-		return (roll <= 1) ? $author$project$Main$Deadly : ((roll <= 2) ? $author$project$Main$Corrosive : ((roll <= 5) ? $author$project$Main$Toxic : ((roll <= 7) ? $author$project$Main$Tainted : $author$project$Main$Pure)));
+		return (roll <= 1) ? $author$project$PlanetaryFeature$Deadly : ((roll <= 2) ? $author$project$PlanetaryFeature$Corrosive : ((roll <= 5) ? $author$project$PlanetaryFeature$Toxic : ((roll <= 7) ? $author$project$PlanetaryFeature$Tainted : $author$project$PlanetaryFeature$Pure)));
 	},
 	A2($elm$random$Random$int, 1, 10));
-var $author$project$Main$randomAtmosphere = function (g) {
+var $author$project$PlanetaryFeature$randomAtmosphere = function (g) {
 	return A2(
 		$elm$random$Random$andThen,
 		function (base) {
@@ -5549,42 +5549,42 @@ var $author$project$Main$randomAtmosphere = function (g) {
 				}
 			}();
 			var roll = base + adjustment;
-			var ac = $author$project$Main$randomAtmosphericComposition;
-			return (roll <= 1) ? $elm$random$Random$constant($author$project$Main$None) : ((roll <= 4) ? A2(
+			var ac = $author$project$PlanetaryFeature$randomAtmosphericComposition;
+			return (roll <= 1) ? $elm$random$Random$constant($author$project$PlanetaryFeature$None) : ((roll <= 4) ? A2(
 				$elm$random$Random$map,
 				function (c) {
-					return $author$project$Main$Thin(c);
+					return $author$project$PlanetaryFeature$Thin(c);
 				},
 				ac) : ((roll <= 9) ? A2(
 				$elm$random$Random$map,
 				function (c) {
-					return $author$project$Main$Moderate(c);
+					return $author$project$PlanetaryFeature$Moderate(c);
 				},
 				ac) : A2(
 				$elm$random$Random$map,
 				function (c) {
-					return $author$project$Main$Heavy(c);
+					return $author$project$PlanetaryFeature$Heavy(c);
 				},
 				ac)));
 		},
 		A2($elm$random$Random$int, 1, 10));
 };
-var $author$project$Main$Large = {$: 'Large'};
-var $author$project$Main$LargeDense = {$: 'LargeDense'};
-var $author$project$Main$LowMass = {$: 'LowMass'};
-var $author$project$Main$Small = {$: 'Small'};
-var $author$project$Main$SmallDense = {$: 'SmallDense'};
-var $author$project$Main$Vast = {$: 'Vast'};
-var $author$project$Main$randomBody = A2(
+var $author$project$PlanetaryFeature$Large = {$: 'Large'};
+var $author$project$PlanetaryFeature$LargeDense = {$: 'LargeDense'};
+var $author$project$PlanetaryFeature$LowMass = {$: 'LowMass'};
+var $author$project$PlanetaryFeature$Small = {$: 'Small'};
+var $author$project$PlanetaryFeature$SmallDense = {$: 'SmallDense'};
+var $author$project$PlanetaryFeature$Vast = {$: 'Vast'};
+var $author$project$PlanetaryFeature$randomBody = A2(
 	$elm$random$Random$map,
 	function (roll) {
-		return (roll <= 1) ? $author$project$Main$LowMass : ((roll <= 3) ? $author$project$Main$Small : ((roll <= 4) ? $author$project$Main$SmallDense : ((roll <= 7) ? $author$project$Main$Large : ((roll <= 8) ? $author$project$Main$LargeDense : $author$project$Main$Vast))));
+		return (roll <= 1) ? $author$project$PlanetaryFeature$LowMass : ((roll <= 3) ? $author$project$PlanetaryFeature$Small : ((roll <= 4) ? $author$project$PlanetaryFeature$SmallDense : ((roll <= 7) ? $author$project$PlanetaryFeature$Large : ((roll <= 8) ? $author$project$PlanetaryFeature$LargeDense : $author$project$PlanetaryFeature$Vast))));
 	},
 	A2($elm$random$Random$int, 1, 10));
-var $author$project$Main$High = {$: 'High'};
-var $author$project$Main$Low = {$: 'Low'};
-var $author$project$Main$Normal = {$: 'Normal'};
-var $author$project$Main$randomGravity = function (body) {
+var $author$project$PlanetaryFeature$High = {$: 'High'};
+var $author$project$PlanetaryFeature$Low = {$: 'Low'};
+var $author$project$PlanetaryFeature$Normal = {$: 'Normal'};
+var $author$project$PlanetaryFeature$randomGravity = function (body) {
 	return A2(
 		$elm$random$Random$map,
 		function (base) {
@@ -5605,16 +5605,16 @@ var $author$project$Main$randomGravity = function (body) {
 				}
 			}();
 			var roll = base + modifier;
-			return (roll <= 2) ? $author$project$Main$Low : ((roll <= 8) ? $author$project$Main$Normal : $author$project$Main$High);
+			return (roll <= 2) ? $author$project$PlanetaryFeature$Low : ((roll <= 8) ? $author$project$PlanetaryFeature$Normal : $author$project$PlanetaryFeature$High);
 		},
 		A2($elm$random$Random$int, 1, 10));
 };
-var $author$project$Main$Burning = {$: 'Burning'};
-var $author$project$Main$Cold = {$: 'Cold'};
-var $author$project$Main$Hot = {$: 'Hot'};
-var $author$project$Main$Ice = {$: 'Ice'};
-var $author$project$Main$Temperate = {$: 'Temperate'};
-var $author$project$Main$randomTemperature = F2(
+var $author$project$PlanetaryFeature$Burning = {$: 'Burning'};
+var $author$project$PlanetaryFeature$Cold = {$: 'Cold'};
+var $author$project$PlanetaryFeature$Hot = {$: 'Hot'};
+var $author$project$PlanetaryFeature$Ice = {$: 'Ice'};
+var $author$project$PlanetaryFeature$Temperate = {$: 'Temperate'};
+var $author$project$PlanetaryFeature$randomTemperature = F2(
 	function (zone, atmosphere) {
 		return A2(
 			$elm$random$Random$map,
@@ -5655,11 +5655,11 @@ var $author$project$Main$randomTemperature = F2(
 					}
 				}();
 				var roll = base + adjustment;
-				return (roll <= 0) ? $author$project$Main$Burning : ((roll <= 3) ? $author$project$Main$Hot : ((roll <= 7) ? $author$project$Main$Temperate : ((roll <= 10) ? $author$project$Main$Cold : $author$project$Main$Ice)));
+				return (roll <= 0) ? $author$project$PlanetaryFeature$Burning : ((roll <= 3) ? $author$project$PlanetaryFeature$Hot : ((roll <= 7) ? $author$project$PlanetaryFeature$Temperate : ((roll <= 10) ? $author$project$PlanetaryFeature$Cold : $author$project$PlanetaryFeature$Ice)));
 			},
 			A2($elm$random$Random$int, 1, 10));
 	});
-var $author$project$Main$randomRocky = function (zone) {
+var $author$project$PlanetaryFeature$randomRocky = function (zone) {
 	return A2(
 		$elm$random$Random$andThen,
 		function (body) {
@@ -5673,76 +5673,76 @@ var $author$project$Main$randomRocky = function (zone) {
 								$elm$random$Random$andThen,
 								function (temperature) {
 									return $elm$random$Random$constant(
-										A5($author$project$Main$TerrestrialPlanet, body, gravity, atmosphere, temperature, _List_Nil));
+										A5($author$project$PlanetaryFeature$TerrestrialPlanet, body, gravity, atmosphere, temperature, _List_Nil));
 								},
-								A2($author$project$Main$randomTemperature, zone, atmosphere));
+								A2($author$project$PlanetaryFeature$randomTemperature, zone, atmosphere));
 						},
-						$author$project$Main$randomAtmosphere(gravity));
+						$author$project$PlanetaryFeature$randomAtmosphere(gravity));
 				},
-				$author$project$Main$randomGravity(body));
+				$author$project$PlanetaryFeature$randomGravity(body));
 		},
-		$author$project$Main$randomBody);
+		$author$project$PlanetaryFeature$randomBody);
 };
-var $author$project$Main$DefenseStation = {$: 'DefenseStation'};
-var $author$project$Main$EgarianVoidMaze = {$: 'EgarianVoidMaze'};
-var $author$project$Main$EldarGate = {$: 'EldarGate'};
-var $author$project$Main$EldarOrrery = {$: 'EldarOrrery'};
-var $author$project$Main$MonitorStation = {$: 'MonitorStation'};
-var $author$project$Main$OrkRok = {$: 'OrkRok'};
-var $author$project$Main$StryxisCollection = {$: 'StryxisCollection'};
-var $author$project$Main$XenosDefenseStation = {$: 'XenosDefenseStation'};
-var $author$project$Main$XenosMonitorStation = {$: 'XenosMonitorStation'};
-var $author$project$Main$randomStationOrigin = A2(
+var $author$project$PlanetaryFeature$DefenseStation = {$: 'DefenseStation'};
+var $author$project$PlanetaryFeature$EgarianVoidMaze = {$: 'EgarianVoidMaze'};
+var $author$project$PlanetaryFeature$EldarGate = {$: 'EldarGate'};
+var $author$project$PlanetaryFeature$EldarOrrery = {$: 'EldarOrrery'};
+var $author$project$PlanetaryFeature$MonitorStation = {$: 'MonitorStation'};
+var $author$project$PlanetaryFeature$OrkRok = {$: 'OrkRok'};
+var $author$project$PlanetaryFeature$StryxisCollection = {$: 'StryxisCollection'};
+var $author$project$PlanetaryFeature$XenosDefenseStation = {$: 'XenosDefenseStation'};
+var $author$project$PlanetaryFeature$XenosMonitorStation = {$: 'XenosMonitorStation'};
+var $author$project$PlanetaryFeature$randomStationOrigin = A2(
 	$elm$random$Random$andThen,
 	function (roll) {
-		return (roll <= 10) ? $elm$random$Random$constant($author$project$Main$EgarianVoidMaze) : ((roll <= 20) ? $elm$random$Random$constant($author$project$Main$EldarOrrery) : ((roll <= 25) ? $elm$random$Random$constant($author$project$Main$EldarGate) : ((roll <= 40) ? $elm$random$Random$constant($author$project$Main$OrkRok) : ((roll <= 50) ? $elm$random$Random$constant($author$project$Main$DefenseStation) : ((roll <= 65) ? $elm$random$Random$constant($author$project$Main$MonitorStation) : ((roll <= 76) ? $elm$random$Random$constant($author$project$Main$StryxisCollection) : ((roll <= 85) ? $elm$random$Random$constant($author$project$Main$XenosDefenseStation) : $elm$random$Random$constant($author$project$Main$XenosMonitorStation))))))));
+		return (roll <= 10) ? $elm$random$Random$constant($author$project$PlanetaryFeature$EgarianVoidMaze) : ((roll <= 20) ? $elm$random$Random$constant($author$project$PlanetaryFeature$EldarOrrery) : ((roll <= 25) ? $elm$random$Random$constant($author$project$PlanetaryFeature$EldarGate) : ((roll <= 40) ? $elm$random$Random$constant($author$project$PlanetaryFeature$OrkRok) : ((roll <= 50) ? $elm$random$Random$constant($author$project$PlanetaryFeature$DefenseStation) : ((roll <= 65) ? $elm$random$Random$constant($author$project$PlanetaryFeature$MonitorStation) : ((roll <= 76) ? $elm$random$Random$constant($author$project$PlanetaryFeature$StryxisCollection) : ((roll <= 85) ? $elm$random$Random$constant($author$project$PlanetaryFeature$XenosDefenseStation) : $elm$random$Random$constant($author$project$PlanetaryFeature$XenosMonitorStation))))))));
 	},
 	A2($elm$random$Random$int, 1, 100));
-var $author$project$Main$randomHabitable = A2(
+var $author$project$PlanetaryFeature$randomHabitable = A2(
 	$elm$random$Random$andThen,
 	function (roll) {
-		return (roll <= 30) ? $elm$random$Random$constant($author$project$Main$AsteroidBelt) : ((roll <= 41) ? $elm$random$Random$constant($author$project$Main$AsteroidCluster) : ((roll <= 47) ? A2(
+		return (roll <= 30) ? $elm$random$Random$constant($author$project$PlanetaryFeature$AsteroidBelt) : ((roll <= 41) ? $elm$random$Random$constant($author$project$PlanetaryFeature$AsteroidCluster) : ((roll <= 47) ? A2(
 			$elm$random$Random$map,
 			function (o) {
-				return $author$project$Main$DerelictStation(o);
+				return $author$project$PlanetaryFeature$DerelictStation(o);
 			},
-			$author$project$Main$randomStationOrigin) : ((roll <= 58) ? $elm$random$Random$constant($author$project$Main$DustCloud) : ((roll <= 64) ? $elm$random$Random$constant($author$project$Main$GravityRiptide) : ((roll <= 93) ? A2(
+			$author$project$PlanetaryFeature$randomStationOrigin) : ((roll <= 58) ? $elm$random$Random$constant($author$project$PlanetaryFeature$DustCloud) : ((roll <= 64) ? $elm$random$Random$constant($author$project$PlanetaryFeature$GravityRiptide) : ((roll <= 93) ? A2(
 			$elm$random$Random$map,
 			function (tp) {
-				return $author$project$Main$RockyPlanet(tp);
+				return $author$project$PlanetaryFeature$RockyPlanet(tp);
 			},
-			$author$project$Main$randomRocky($author$project$Main$Habitable)) : A2(
+			$author$project$PlanetaryFeature$randomRocky($author$project$BasicTypes$Habitable)) : A2(
 			$elm$random$Random$map,
 			function (o) {
-				return $author$project$Main$StarshipGraveyard(o);
+				return $author$project$PlanetaryFeature$StarshipGraveyard(o);
 			},
-			$author$project$Main$randomGraveyardOrigin))))));
+			$author$project$PlanetaryFeature$randomGraveyardOrigin))))));
 	},
 	A2($elm$random$Random$int, 21, 100));
-var $author$project$Main$GasGiant = function (a) {
+var $author$project$PlanetaryFeature$GasGiant = function (a) {
 	return {$: 'GasGiant', a: a};
 };
-var $author$project$Main$Inner = {$: 'Inner'};
-var $author$project$Main$RadiationBurst = {$: 'RadiationBurst'};
-var $author$project$Main$SolarFlare = {$: 'SolarFlare'};
-var $author$project$Main$GiantPlanet = F3(
+var $author$project$BasicTypes$Inner = {$: 'Inner'};
+var $author$project$PlanetaryFeature$RadiationBurst = {$: 'RadiationBurst'};
+var $author$project$PlanetaryFeature$SolarFlare = {$: 'SolarFlare'};
+var $author$project$PlanetaryFeature$GiantPlanet = F3(
 	function (a, b, c) {
 		return {$: 'GiantPlanet', a: a, b: b, c: c};
 	});
-var $author$project$Main$Dwarf = {$: 'Dwarf'};
-var $author$project$Main$Giant = {$: 'Giant'};
-var $author$project$Main$Massive = {$: 'Massive'};
-var $author$project$Main$randomGasBody = A2(
+var $author$project$PlanetaryFeature$Dwarf = {$: 'Dwarf'};
+var $author$project$PlanetaryFeature$Giant = {$: 'Giant'};
+var $author$project$PlanetaryFeature$Massive = {$: 'Massive'};
+var $author$project$PlanetaryFeature$randomGasBody = A2(
 	$elm$random$Random$map,
 	function (roll) {
-		return (roll <= 2) ? $author$project$Main$Dwarf : ((roll <= 8) ? $author$project$Main$Giant : $author$project$Main$Massive);
+		return (roll <= 2) ? $author$project$PlanetaryFeature$Dwarf : ((roll <= 8) ? $author$project$PlanetaryFeature$Giant : $author$project$PlanetaryFeature$Massive);
 	},
 	A2($elm$random$Random$int, 1, 10));
-var $author$project$Main$Powerful = {$: 'Powerful'};
-var $author$project$Main$Strong = {$: 'Strong'};
-var $author$project$Main$Titanic = {$: 'Titanic'};
-var $author$project$Main$Weak = {$: 'Weak'};
-var $author$project$Main$randomGasGravity = function (body) {
+var $author$project$PlanetaryFeature$Powerful = {$: 'Powerful'};
+var $author$project$PlanetaryFeature$Strong = {$: 'Strong'};
+var $author$project$PlanetaryFeature$Titanic = {$: 'Titanic'};
+var $author$project$PlanetaryFeature$Weak = {$: 'Weak'};
+var $author$project$PlanetaryFeature$randomGasGravity = function (body) {
 	return A2(
 		$elm$random$Random$map,
 		function (base) {
@@ -5757,63 +5757,63 @@ var $author$project$Main$randomGasGravity = function (body) {
 				}
 			}();
 			var roll = base + adjustment;
-			return (roll <= 2) ? $author$project$Main$Weak : ((roll <= 6) ? $author$project$Main$Strong : ((roll <= 9) ? $author$project$Main$Powerful : $author$project$Main$Titanic));
+			return (roll <= 2) ? $author$project$PlanetaryFeature$Weak : ((roll <= 6) ? $author$project$PlanetaryFeature$Strong : ((roll <= 9) ? $author$project$PlanetaryFeature$Powerful : $author$project$PlanetaryFeature$Titanic));
 		},
 		A2($elm$random$Random$int, 1, 10));
 };
-var $author$project$Main$randomGas = A2(
+var $author$project$PlanetaryFeature$randomGas = A2(
 	$elm$random$Random$andThen,
 	function (body) {
 		return A2(
 			$elm$random$Random$andThen,
 			function (gravity) {
 				return $elm$random$Random$constant(
-					A3($author$project$Main$GiantPlanet, body, gravity, _List_Nil));
+					A3($author$project$PlanetaryFeature$GiantPlanet, body, gravity, _List_Nil));
 			},
-			$author$project$Main$randomGasGravity(body));
+			$author$project$PlanetaryFeature$randomGasGravity(body));
 	},
-	$author$project$Main$randomGasBody);
-var $author$project$Main$randomInner = A2(
+	$author$project$PlanetaryFeature$randomGasBody);
+var $author$project$PlanetaryFeature$randomInner = A2(
 	$elm$random$Random$andThen,
 	function (roll) {
-		return (roll <= 29) ? $elm$random$Random$constant($author$project$Main$AsteroidCluster) : ((roll <= 41) ? $elm$random$Random$constant($author$project$Main$DustCloud) : ((roll <= 45) ? A2(
+		return (roll <= 29) ? $elm$random$Random$constant($author$project$PlanetaryFeature$AsteroidCluster) : ((roll <= 41) ? $elm$random$Random$constant($author$project$PlanetaryFeature$DustCloud) : ((roll <= 45) ? A2(
 			$elm$random$Random$map,
 			function (gp) {
-				return $author$project$Main$GasGiant(gp);
+				return $author$project$PlanetaryFeature$GasGiant(gp);
 			},
-			$author$project$Main$randomGas) : ((roll <= 56) ? $elm$random$Random$constant($author$project$Main$GravityRiptide) : ((roll <= 76) ? A2(
+			$author$project$PlanetaryFeature$randomGas) : ((roll <= 56) ? $elm$random$Random$constant($author$project$PlanetaryFeature$GravityRiptide) : ((roll <= 76) ? A2(
 			$elm$random$Random$map,
 			function (tp) {
-				return $author$project$Main$RockyPlanet(tp);
+				return $author$project$PlanetaryFeature$RockyPlanet(tp);
 			},
-			$author$project$Main$randomRocky($author$project$Main$Inner)) : ((roll <= 89) ? $elm$random$Random$constant($author$project$Main$RadiationBurst) : $elm$random$Random$constant($author$project$Main$SolarFlare))))));
+			$author$project$PlanetaryFeature$randomRocky($author$project$BasicTypes$Inner)) : ((roll <= 89) ? $elm$random$Random$constant($author$project$PlanetaryFeature$RadiationBurst) : $elm$random$Random$constant($author$project$PlanetaryFeature$SolarFlare))))));
 	},
 	A2($elm$random$Random$int, 21, 100));
-var $author$project$Main$Outer = {$: 'Outer'};
-var $author$project$Main$randomOuter = A2(
+var $author$project$BasicTypes$Outer = {$: 'Outer'};
+var $author$project$PlanetaryFeature$randomOuter = A2(
 	$elm$random$Random$andThen,
 	function (roll) {
-		return (roll <= 29) ? $elm$random$Random$constant($author$project$Main$AsteroidBelt) : ((roll <= 40) ? $elm$random$Random$constant($author$project$Main$AsteroidCluster) : ((roll <= 46) ? A2(
+		return (roll <= 29) ? $elm$random$Random$constant($author$project$PlanetaryFeature$AsteroidBelt) : ((roll <= 40) ? $elm$random$Random$constant($author$project$PlanetaryFeature$AsteroidCluster) : ((roll <= 46) ? A2(
 			$elm$random$Random$map,
 			function (o) {
-				return $author$project$Main$DerelictStation(o);
+				return $author$project$PlanetaryFeature$DerelictStation(o);
 			},
-			$author$project$Main$randomStationOrigin) : ((roll <= 55) ? $elm$random$Random$constant($author$project$Main$DustCloud) : ((roll <= 73) ? A2(
+			$author$project$PlanetaryFeature$randomStationOrigin) : ((roll <= 55) ? $elm$random$Random$constant($author$project$PlanetaryFeature$DustCloud) : ((roll <= 73) ? A2(
 			$elm$random$Random$map,
 			function (gp) {
-				return $author$project$Main$GasGiant(gp);
+				return $author$project$PlanetaryFeature$GasGiant(gp);
 			},
-			$author$project$Main$randomGas) : ((roll <= 80) ? $elm$random$Random$constant($author$project$Main$GravityRiptide) : ((roll <= 93) ? A2(
+			$author$project$PlanetaryFeature$randomGas) : ((roll <= 80) ? $elm$random$Random$constant($author$project$PlanetaryFeature$GravityRiptide) : ((roll <= 93) ? A2(
 			$elm$random$Random$map,
 			function (tp) {
-				return $author$project$Main$RockyPlanet(tp);
+				return $author$project$PlanetaryFeature$RockyPlanet(tp);
 			},
-			$author$project$Main$randomRocky($author$project$Main$Outer)) : A2(
+			$author$project$PlanetaryFeature$randomRocky($author$project$BasicTypes$Outer)) : A2(
 			$elm$random$Random$map,
 			function (o) {
-				return $author$project$Main$StarshipGraveyard(o);
+				return $author$project$PlanetaryFeature$StarshipGraveyard(o);
 			},
-			$author$project$Main$randomGraveyardOrigin)))))));
+			$author$project$PlanetaryFeature$randomGraveyardOrigin)))))));
 	},
 	A2($elm$random$Random$int, 21, 100));
 var $elm$core$Maybe$andThen = F2(
@@ -5916,15 +5916,15 @@ var $author$project$Main$planetsForStar = F2(
 			A2(
 				$elm$random$Random$list,
 				$author$project$Main$regionSizes(star).inner,
-				$author$project$Main$randomInner),
+				$author$project$PlanetaryFeature$randomInner),
 			A2(
 				$elm$random$Random$list,
 				$author$project$Main$regionSizes(star).habitable,
-				$author$project$Main$randomHabitable),
+				$author$project$PlanetaryFeature$randomHabitable),
 			A2(
 				$elm$random$Random$list,
 				$author$project$Main$regionSizes(star).outer,
-				$author$project$Main$randomOuter));
+				$author$project$PlanetaryFeature$randomOuter));
 	});
 var $author$project$Main$Binary = F2(
 	function (a, b) {
@@ -6194,7 +6194,7 @@ var $author$project$Main$planetDetailStyle = function (z) {
 			$author$project$Main$row(2)
 		]);
 };
-var $author$project$Main$showAtmosphereComposition = function (c) {
+var $author$project$PlanetaryFeature$showAtmosphereComposition = function (c) {
 	switch (c.$) {
 		case 'Deadly':
 			return 'Deadly';
@@ -6208,22 +6208,22 @@ var $author$project$Main$showAtmosphereComposition = function (c) {
 			return 'Pure';
 	}
 };
-var $author$project$Main$showAtmosphere = function (a) {
+var $author$project$PlanetaryFeature$showAtmosphere = function (a) {
 	switch (a.$) {
 		case 'None':
 			return 'No atmosphere';
 		case 'Thin':
 			var c = a.a;
-			return 'Thin, ' + ($author$project$Main$showAtmosphereComposition(c) + ' atmosphere');
+			return 'Thin, ' + ($author$project$PlanetaryFeature$showAtmosphereComposition(c) + ' atmosphere');
 		case 'Moderate':
 			var c = a.a;
-			return 'Moderately thick, ' + ($author$project$Main$showAtmosphereComposition(c) + ' atmosphere');
+			return 'Moderately thick, ' + ($author$project$PlanetaryFeature$showAtmosphereComposition(c) + ' atmosphere');
 		default:
 			var c = a.a;
-			return 'Heavy, ' + ($author$project$Main$showAtmosphereComposition(c) + ' atmosphere');
+			return 'Heavy, ' + ($author$project$PlanetaryFeature$showAtmosphereComposition(c) + ' atmosphere');
 	}
 };
-var $author$project$Main$showBody = function (b) {
+var $author$project$PlanetaryFeature$showBody = function (b) {
 	switch (b.$) {
 		case 'LowMass':
 			return 'Low Mass';
@@ -6239,7 +6239,7 @@ var $author$project$Main$showBody = function (b) {
 			return 'Vast';
 	}
 };
-var $author$project$Main$showDerelictStationOrigin = function (o) {
+var $author$project$PlanetaryFeature$showDerelictStationOrigin = function (o) {
 	return 'Origin: ' + function () {
 		switch (o.$) {
 			case 'EgarianVoidMaze':
@@ -6263,7 +6263,7 @@ var $author$project$Main$showDerelictStationOrigin = function (o) {
 		}
 	}();
 };
-var $author$project$Main$showGasBody = function (b) {
+var $author$project$PlanetaryFeature$showGasBody = function (b) {
 	switch (b.$) {
 		case 'Dwarf':
 			return 'Gas dwarf';
@@ -6273,7 +6273,7 @@ var $author$project$Main$showGasBody = function (b) {
 			return 'Massive gas giant';
 	}
 };
-var $author$project$Main$showGasGravity = function (g) {
+var $author$project$PlanetaryFeature$showGasGravity = function (g) {
 	switch (g.$) {
 		case 'Weak':
 			return 'weak gravity';
@@ -6285,7 +6285,7 @@ var $author$project$Main$showGasGravity = function (g) {
 			return 'titanic gravity';
 	}
 };
-var $author$project$Main$showGraveyardOrigin = function (o) {
+var $author$project$PlanetaryFeature$showGraveyardOrigin = function (o) {
 	return 'Origin: ' + function () {
 		switch (o.$) {
 			case 'CrushedFleet':
@@ -6303,7 +6303,7 @@ var $author$project$Main$showGraveyardOrigin = function (o) {
 		}
 	}();
 };
-var $author$project$Main$showGravity = function (g) {
+var $author$project$PlanetaryFeature$showGravity = function (g) {
 	switch (g.$) {
 		case 'Low':
 			return 'low gravity';
@@ -6313,7 +6313,7 @@ var $author$project$Main$showGravity = function (g) {
 			return 'high gravity';
 	}
 };
-var $author$project$Main$showPlanet = function (p) {
+var $author$project$PlanetaryFeature$showPlanet = function (p) {
 	switch (p.$) {
 		case 'RockyPlanet':
 			var deets = p.a;
@@ -6341,7 +6341,7 @@ var $author$project$Main$showPlanet = function (p) {
 			return 'Starship Graveyard';
 	}
 };
-var $author$project$Main$showTemperature = function (t) {
+var $author$project$PlanetaryFeature$showTemperature = function (t) {
 	switch (t.$) {
 		case 'Burning':
 			return 'Burning';
@@ -6369,7 +6369,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showPlanet(planet))
+								$author$project$PlanetaryFeature$showPlanet(planet))
 							])),
 					A2(
 						$elm$html$Html$p,
@@ -6379,7 +6379,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showDerelictStationOrigin(o))
+								$author$project$PlanetaryFeature$showDerelictStationOrigin(o))
 							])));
 			case 'StarshipGraveyard':
 				var o = planet.a;
@@ -6390,7 +6390,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showPlanet(planet))
+								$author$project$PlanetaryFeature$showPlanet(planet))
 							])),
 					A2(
 						$elm$html$Html$p,
@@ -6400,7 +6400,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showGraveyardOrigin(o))
+								$author$project$PlanetaryFeature$showGraveyardOrigin(o))
 							])));
 			case 'RockyPlanet':
 				var _v1 = planet.a;
@@ -6416,7 +6416,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showPlanet(planet))
+								$author$project$PlanetaryFeature$showPlanet(planet))
 							])),
 					A2(
 						$elm$html$Html$div,
@@ -6429,7 +6429,7 @@ var $author$project$Main$planetView = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Main$showBody(body) + (' with ' + $author$project$Main$showGravity(gravity)))
+										$author$project$PlanetaryFeature$showBody(body) + (' with ' + $author$project$PlanetaryFeature$showGravity(gravity)))
 									])),
 								A2(
 								$elm$html$Html$p,
@@ -6437,7 +6437,7 @@ var $author$project$Main$planetView = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Main$showTemperature(temperature) + ' world')
+										$author$project$PlanetaryFeature$showTemperature(temperature) + ' world')
 									])),
 								A2(
 								$elm$html$Html$p,
@@ -6445,7 +6445,7 @@ var $author$project$Main$planetView = F2(
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Main$showAtmosphere(atmosphere))
+										$author$project$PlanetaryFeature$showAtmosphere(atmosphere))
 									]))
 							])));
 			case 'GasGiant':
@@ -6460,7 +6460,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showPlanet(planet))
+								$author$project$PlanetaryFeature$showPlanet(planet))
 							])),
 					A2(
 						$elm$html$Html$p,
@@ -6470,7 +6470,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showGasBody(body) + (' with ' + $author$project$Main$showGasGravity(gravity)))
+								$author$project$PlanetaryFeature$showGasBody(body) + (' with ' + $author$project$PlanetaryFeature$showGasGravity(gravity)))
 							])));
 			default:
 				var x = planet;
@@ -6481,7 +6481,7 @@ var $author$project$Main$planetView = F2(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Main$showPlanet(x))
+								$author$project$PlanetaryFeature$showPlanet(x))
 							])),
 					A2(
 						$elm$html$Html$div,
@@ -6497,19 +6497,19 @@ var $elm$core$Tuple$second = function (_v0) {
 };
 var $author$project$Main$habitableView = $elm$core$List$concatMap(
 	function (p) {
-		var pv = A2($author$project$Main$planetView, $author$project$Main$Habitable, p);
+		var pv = A2($author$project$Main$planetView, $author$project$BasicTypes$Habitable, p);
 		return _List_fromArray(
 			[pv.a, pv.b]);
 	});
 var $author$project$Main$innerView = $elm$core$List$concatMap(
 	function (p) {
-		var pv = A2($author$project$Main$planetView, $author$project$Main$Inner, p);
+		var pv = A2($author$project$Main$planetView, $author$project$BasicTypes$Inner, p);
 		return _List_fromArray(
 			[pv.a, pv.b]);
 	});
 var $author$project$Main$outerView = $elm$core$List$concatMap(
 	function (p) {
-		var pv = A2($author$project$Main$planetView, $author$project$Main$Outer, p);
+		var pv = A2($author$project$Main$planetView, $author$project$BasicTypes$Outer, p);
 		return _List_fromArray(
 			[pv.a, pv.b]);
 	});
